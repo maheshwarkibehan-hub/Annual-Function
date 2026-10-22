@@ -1,6 +1,10 @@
 # Test screenshots & dev artifacts
 screenshot*.png
 test_*.py
+*-cf.mp4
+
+# Raw AI upscale outputs (over 25 MiB Cloudflare asset limit)
+assets/Animate_*
 
 # Scraper cache & raw HTML
 *.txt
