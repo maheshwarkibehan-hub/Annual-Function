@@ -813,9 +813,105 @@ function initHeroVideoSync() {
 }
 
 /* ==========================================================================
+   0. APPLE LIQUID GLASS 4K OVERTURE PRELOADER
+   ========================================================================== */
+function initPreloader() {
+  const preloader = document.getElementById('app-preloader');
+  const progressBar = document.getElementById('preloader-progress-bar');
+  const percentText = document.getElementById('preloader-percent');
+  const statusText = document.getElementById('preloader-status-text');
+
+  if (!preloader) return;
+
+  const isMobile = window.innerWidth <= 768;
+  const targetVideo = isMobile ? document.querySelector('.video-mobile') : document.querySelector('.video-desktop');
+
+  let currentProgress = 0;
+  let targetProgress = 20;
+  let isDone = false;
+
+  const updateUI = (pct, status) => {
+    if (progressBar) progressBar.style.width = `${pct}%`;
+    if (percentText) percentText.textContent = `${Math.round(pct)}%`;
+    if (status && statusText) statusText.textContent = status;
+  };
+
+  // Smooth tick loop for fluid progress bar movement
+  const progressInterval = setInterval(() => {
+    if (currentProgress < targetProgress) {
+      currentProgress += Math.min(3, (targetProgress - currentProgress) * 0.16 + 0.6);
+      if (currentProgress > targetProgress) currentProgress = targetProgress;
+      updateUI(currentProgress);
+    }
+  }, 35);
+
+  function finishLoading() {
+    if (isDone) return;
+    isDone = true;
+    targetProgress = 100;
+    updateUI(100, "STAGE READY · OVERTURE SYNC");
+
+    setTimeout(() => {
+      clearInterval(progressInterval);
+      preloader.classList.add('is-loaded');
+
+      // Start the appropriate hero video cleanly
+      if (targetVideo) {
+        targetVideo.play().catch(() => {});
+      }
+
+      // Refresh ScrollTrigger and layout engines
+      if (typeof ScrollTrigger !== 'undefined') {
+        ScrollTrigger.refresh();
+      }
+
+      setTimeout(() => {
+        preloader.style.display = 'none';
+      }, 900);
+    }, 450);
+  }
+
+  // Preload video buffer
+  if (targetVideo) {
+    targetProgress = 35;
+    updateUI(targetProgress, "CONNECTING 4K FEED...");
+
+    if (targetVideo.readyState >= 3) {
+      targetProgress = 90;
+      updateUI(targetProgress, "SYNCHRONIZING AUDIO-VISUAL...");
+      setTimeout(finishLoading, 400);
+    } else {
+      targetVideo.addEventListener('loadeddata', () => {
+        targetProgress = Math.max(targetProgress, 60);
+        updateUI(targetProgress, "BUFFERING 4K FRAMES...");
+      }, { once: true });
+
+      targetVideo.addEventListener('canplay', () => {
+        targetProgress = Math.max(targetProgress, 88);
+        updateUI(targetProgress, "FINALIZING STAGE...");
+      }, { once: true });
+
+      targetVideo.addEventListener('canplaythrough', () => {
+        finishLoading();
+      }, { once: true });
+    }
+  }
+
+  // Graceful fallback: guarantee full reveal after max 4 seconds even on slow networks
+  setTimeout(() => {
+    if (!isDone) {
+      finishLoading();
+    }
+  }, 4200);
+}
+
+/* ==========================================================================
    12. APPLICATION LIFECYCLE BOOTSTRAP
    ========================================================================== */
 document.addEventListener('DOMContentLoaded', () => {
+  // 0. Stage 4K Video Preloader
+  initPreloader();
+
   // 1. Initialise Smooth Inertial Scroll
   initSmoothScroll();
 

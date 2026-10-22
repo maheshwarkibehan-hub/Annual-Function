@@ -202,6 +202,173 @@ a {
 }
 
 /* --------------------------------------------------------------------------
+   4b. APPLE LIQUID GLASS 4K OVERTURE PRELOADER (#app-preloader)
+   -------------------------------------------------------------------------- */
+.app-preloader {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  background: radial-gradient(circle at center, #0b0d13 0%, #050608 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.85s cubic-bezier(0.16, 1, 0.3, 1), transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.app-preloader.is-loaded {
+  opacity: 0;
+  visibility: hidden;
+  transform: scale(1.03);
+  pointer-events: none;
+}
+
+.preloader-bg-glow {
+  position: absolute;
+  width: min(520px, 90vw);
+  height: min(520px, 90vw);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(230, 184, 0, 0.18) 0%, rgba(184, 134, 11, 0.06) 45%, transparent 70%);
+  filter: blur(50px);
+  pointer-events: none;
+  animation: preloaderGlowPulse 3s ease-in-out infinite alternate;
+}
+
+@keyframes preloaderGlowPulse {
+  0% { transform: scale(0.92); opacity: 0.65; }
+  100% { transform: scale(1.08); opacity: 1; }
+}
+
+.preloader-content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 1.5rem;
+  max-width: 90vw;
+}
+
+.preloader-crest-wrapper {
+  position: relative;
+  width: 84px;
+  height: 84px;
+  margin: 0 auto 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.preloader-crest-ring {
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  border: 1.5px solid transparent;
+  border-top-color: var(--accent-spotlight);
+  border-right-color: rgba(255, 255, 255, 0.35);
+  animation: preloaderRingSpin 2s linear infinite;
+}
+
+@keyframes preloaderRingSpin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.preloader-crest {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+  padding: 4px;
+}
+
+.preloader-brand-title {
+  font-family: var(--font-display);
+  font-size: 1.0625rem;
+  font-weight: 700;
+  color: #FFFFFF;
+  letter-spacing: 0.03em;
+  margin-bottom: 0.35rem;
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.85);
+  white-space: nowrap;
+}
+
+.preloader-sub-title {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  color: var(--accent-spotlight);
+  margin-bottom: 2rem;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.preloader-track-wrapper {
+  width: min(300px, 80vw);
+  margin: 0 auto;
+}
+
+.preloader-progress-track {
+  width: 100%;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 999px;
+  overflow: hidden;
+  position: relative;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.6);
+}
+
+.preloader-progress-bar {
+  width: 0%;
+  height: 100%;
+  background: linear-gradient(90deg, #E6B800 0%, #FFF3B0 50%, #E6B800 100%);
+  box-shadow: 0 0 14px rgba(230, 184, 0, 0.85);
+  border-radius: 999px;
+  transition: width 0.2s ease-out;
+}
+
+.preloader-status-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 0.75rem;
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  letter-spacing: 0.1em;
+  color: var(--text-tertiary);
+}
+
+.preloader-percent {
+  color: #FFFFFF;
+  font-weight: 600;
+}
+
+@media (max-width: 480px) {
+  .preloader-crest-wrapper {
+    width: 72px;
+    height: 72px;
+    margin-bottom: 1.25rem;
+  }
+  .preloader-brand-title {
+    font-size: 0.875rem;
+  }
+  .preloader-sub-title {
+    font-size: 0.6rem;
+    margin-bottom: 1.5rem;
+  }
+  .preloader-track-wrapper {
+    width: min(260px, 82vw);
+  }
+}
+
+/* --------------------------------------------------------------------------
    5. FLOATING TOP OPTICAL HEADER
    -------------------------------------------------------------------------- */
 .site-header {

@@ -16,9 +16,35 @@
   <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
   <!-- Core Apple Liquid Glass Stylesheet -->
-  <link rel="stylesheet" href="css/style.css?v=20261023d">
+  <link rel="stylesheet" href="css/style.css?v=20261023e">
 </head>
 <body>
+
+  <!-- ========================================================================
+       0. APPLE LIQUID GLASS 4K OVERTURE PRELOADER
+       ======================================================================== -->
+  <div id="app-preloader" class="app-preloader" role="status" aria-live="polite" aria-label="Loading Aetheria 2026 Stage Assets">
+    <div class="preloader-bg-glow" aria-hidden="true"></div>
+    <div class="preloader-content">
+      <div class="preloader-crest-wrapper">
+        <div class="preloader-crest-ring" aria-hidden="true"></div>
+        <img src="assets/school-logo.png" alt="St. Joseph's School Crest" class="preloader-crest" onerror="this.src='assets/school logo (2).png'">
+      </div>
+      <div class="preloader-brand-title">ST. JOSEPH'S SR. SEC. SCHOOL</div>
+      <div class="preloader-sub-title">AETHERIA 2026 · 4K STAGE OVERTURE</div>
+      
+      <!-- Progress Bar & Status -->
+      <div class="preloader-track-wrapper">
+        <div class="preloader-progress-track">
+          <div id="preloader-progress-bar" class="preloader-progress-bar"></div>
+        </div>
+        <div class="preloader-status-row">
+          <span id="preloader-status-text" class="preloader-status-text">BUFFERING 4K OVERTURE...</span>
+          <span id="preloader-percent" class="preloader-percent">0%</span>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- ========================================================================
        1. TACTILE FILM GRAIN OVERLAY (Fixed SVG feTurbulence at 0.035 opacity)
