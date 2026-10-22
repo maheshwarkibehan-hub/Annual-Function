@@ -1,0 +1,11 @@
+# Test screenshots & dev artifacts
+screenshot*.png
+test_*.py
+
+# Scraper cache & raw HTML
+*.txt
+album.html
+
+# OS metadata
+.DS_Store
+Thumbs.db

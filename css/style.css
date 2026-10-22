@@ -1,0 +1,2490 @@
+/* ==========================================================================
+   AETHERIA 2026 — APPLE 2026 "LIQUID GLASS" SPATIAL DESIGN SYSTEM
+   St. Joseph's School, Kajipur · Annual Cultural & Academic Gala
+   Adheres to Anthropic Anti-Slop (Oct 2026) & OpenAI Frontend Architecture (2026)
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. DESIGN TOKENS & LIQUID GLASS SPECIFICATION
+   -------------------------------------------------------------------------- */
+:root {
+  /* Core Palette: Obsidian Theater & Warm Stage Tungsten Gold */
+  --bg-obsidian: #070708;
+  --bg-elevated: #111114;
+  --bg-surface: #18181c;
+  --bg-surface-translucent: rgba(24, 24, 28, 0.72);
+  
+  --text-primary: #F5F5F7;
+  --text-secondary: rgba(245, 245, 247, 0.64);
+  --text-tertiary: rgba(245, 245, 247, 0.38);
+  
+  --accent-spotlight: #E5C158;
+  --accent-spotlight-glow: rgba(229, 193, 88, 0.28);
+  --accent-spotlight-dim: rgba(229, 193, 88, 0.12);
+  --hairline-border: rgba(255, 255, 255, 0.09);
+  --hairline-border-bright: rgba(255, 255, 255, 0.18);
+
+  /* Apple 2026 "Liquid Glass" Material Tokens */
+  --liquid-glass-bg: linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.03) 100%);
+  --liquid-glass-bg-subtle: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%);
+  --liquid-glass-blur: blur(28px) saturate(190%);
+  --liquid-glass-blur-header: blur(32px) saturate(200%);
+  --liquid-glass-border: 1px solid rgba(255, 255, 255, 0.18);
+  --liquid-glass-border-subtle: 1px solid rgba(255, 255, 255, 0.11);
+  --liquid-glass-highlight: inset 0 1px 0 0 rgba(255, 255, 255, 0.32), inset 0 -1px 0 0 rgba(255, 255, 255, 0.05);
+  --liquid-glass-shadow: 0 24px 60px -12px rgba(0, 0, 0, 0.65);
+  --liquid-glass-shadow-sm: 0 12px 32px -8px rgba(0, 0, 0, 0.5);
+
+  /* Configurable Hero Blank-Space Coordinates for Countdown Timer */
+  --timer-top: clamp(5.25rem, 11vh, 7.5rem);
+  --timer-right: clamp(1.5rem, 3.8vw, 3.5rem);
+  --timer-bottom: auto;
+  --timer-left: auto;
+  --timer-transform: none;
+
+  /* Typography System */
+  --font-display: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+  --font-serif: 'Instrument Serif', Georgia, serif;
+  --font-ui: 'Geist', 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+  --font-mono: 'JetBrains Mono', 'Geist Mono', SFMono-Regular, monospace;
+
+  /* Animation Timings */
+  --ease-apple: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --transition-fast: 0.22s var(--ease-apple);
+  --transition-smooth: 0.48s var(--ease-apple);
+  --transition-slow: 0.8s var(--ease-apple);
+}
+
+/* High Contrast Mode for Low-Vision Accessibility */
+body.high-contrast-mode {
+  --bg-obsidian: #000000;
+  --bg-elevated: #0d0d0f;
+  --text-primary: #FFFFFF;
+  --text-secondary: rgba(255, 255, 255, 0.88);
+  --text-tertiary: rgba(255, 255, 255, 0.65);
+  --accent-spotlight: #FFD566;
+  --hairline-border: rgba(255, 255, 255, 0.28);
+  --liquid-glass-bg: #141417;
+  --liquid-glass-border: 1px solid rgba(255, 255, 255, 0.38);
+  --liquid-glass-highlight: inset 0 1px 0 0 rgba(255, 255, 255, 0.6);
+}
+
+/* --------------------------------------------------------------------------
+   2. RESET & BASE ARCHITECTURE
+   -------------------------------------------------------------------------- */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html {
+  font-family: var(--font-ui);
+  background-color: var(--bg-obsidian);
+  color: var(--text-primary);
+  font-size: 16px;
+  line-height: 1.5;
+  scroll-behavior: auto; /* Delegated to Lenis smooth scroll */
+  overflow-x: hidden;
+}
+
+body {
+  background-color: var(--bg-obsidian);
+  color: var(--text-primary);
+  position: relative;
+  min-height: 100vh;
+  overflow-x: hidden;
+  letter-spacing: -0.011em;
+}
+
+::selection {
+  background: var(--accent-spotlight);
+  color: #070708;
+}
+
+img, video {
+  max-width: 100%;
+  display: block;
+}
+
+button, input, select {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: none;
+  outline: none;
+}
+
+button {
+  cursor: pointer;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* --------------------------------------------------------------------------
+   3. TACTILE FILM GRAIN OVERLAY (SVG feTurbulence)
+   -------------------------------------------------------------------------- */
+.film-grain-overlay {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.035;
+  mix-blend-mode: overlay;
+}
+
+/* --------------------------------------------------------------------------
+   4. MAGNETIC CUSTOM CURSOR FOLLOWER
+   -------------------------------------------------------------------------- */
+.cursor-dot {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 8px;
+  height: 8px;
+  background-color: var(--accent-spotlight);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 10000;
+  transform: translate(-50%, -50%);
+  opacity: 0; /* Hidden until first user interaction */
+  transition: opacity 0.3s ease, transform 0.1s ease-out;
+}
+
+.cursor-dot.is-visible {
+  opacity: 1;
+}
+
+.cursor-pill {
+  position: fixed;
+  top: 0;
+  left: 0;
+  min-width: 32px;
+  height: 32px;
+  padding: 0 12px;
+  border-radius: 999px;
+  background: var(--liquid-glass-bg);
+  backdrop-filter: var(--liquid-glass-blur);
+  -webkit-backdrop-filter: var(--liquid-glass-blur);
+  border: var(--liquid-glass-border);
+  box-shadow: var(--liquid-glass-shadow-sm);
+  pointer-events: none;
+  z-index: 9998;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+  color: var(--text-primary);
+  opacity: 0;
+  transition: width 0.3s var(--ease-apple), height 0.3s var(--ease-apple), opacity 0.25s ease, background 0.25s ease;
+}
+
+.cursor-pill.is-active {
+  opacity: 1;
+}
+
+@media (hover: none) or (pointer: coarse) {
+  .cursor-dot, .cursor-pill {
+    display: none !important;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   5. FLOATING TOP OPTICAL HEADER
+   -------------------------------------------------------------------------- */
+.site-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 100;
+  padding: clamp(1.25rem, 3.2vh, 2rem) clamp(1.5rem, 5vw, 4rem);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: padding 0.4s var(--ease-apple), background 0.4s var(--ease-apple), border-color 0.4s var(--ease-apple);
+}
+
+.site-header.is-scrolled {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+
+/* Header Brand / School Crest Anchor */
+.header-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 0.35rem 1.15rem 0.35rem 0.45rem;
+  border-radius: 9999px;
+  background: rgba(12, 14, 18, 0.65);
+  backdrop-filter: blur(24px) saturate(190%);
+  -webkit-backdrop-filter: blur(24px) saturate(190%);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.22);
+  text-decoration: none;
+  flex-shrink: 0;
+  transition: transform var(--transition-fast), border-color var(--transition-fast), background var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.header-brand:hover {
+  background: rgba(18, 22, 28, 0.85);
+  border-color: rgba(255, 255, 255, 0.35);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+  transform: translateY(-1px);
+}
+
+.crest-frame {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: 2px;
+  transition: transform var(--transition-fast);
+  flex-shrink: 0;
+}
+
+.header-brand:hover .crest-frame {
+  transform: scale(1.08);
+}
+
+.crest-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
+}
+
+.brand-meta {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2px;
+}
+
+.school-name {
+  font-family: var(--font-display);
+  font-size: 0.90625rem;
+  font-weight: 700;
+  letter-spacing: 0.015em;
+  color: var(--text-primary);
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.school-motto {
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: var(--accent-spotlight);
+  text-transform: uppercase;
+  line-height: 1.2;
+  white-space: nowrap;
+  opacity: 0.95;
+}
+
+.btn-reserve-text-full {
+  display: inline;
+}
+
+.btn-reserve-text-mobile {
+  display: none;
+}
+
+/* Center / Right Anchor: Floating Apple Liquid Glass Capsule */
+.header-glass-dock {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.375rem 0.5rem 0.375rem 1.25rem;
+  border-radius: 999px;
+  background: var(--liquid-glass-bg);
+  backdrop-filter: var(--liquid-glass-blur-header);
+  -webkit-backdrop-filter: var(--liquid-glass-blur-header);
+  border: var(--liquid-glass-border);
+  box-shadow: var(--liquid-glass-shadow-sm), var(--liquid-glass-highlight);
+  transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.header-nav {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.nav-link {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  transition: color var(--transition-fast);
+  position: relative;
+  padding: 0.375rem 0;
+}
+
+.nav-link:hover, .nav-link.is-active {
+  color: var(--text-primary);
+}
+
+.nav-link.is-active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 14px;
+  height: 2px;
+  border-radius: 999px;
+  background: var(--accent-spotlight);
+}
+
+.header-utilities {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  margin-left: 0.75rem;
+  padding-left: 0.75rem;
+  border-left: 1px solid var(--hairline-border);
+}
+
+.util-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+  transition: color var(--transition-fast), background var(--transition-fast);
+  position: relative;
+}
+
+.util-btn:hover {
+  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.util-btn.is-active {
+  color: var(--accent-spotlight);
+}
+
+/* Pure Stage Cinema / Showcase Mode: clears all overlays to reveal raw cinematic video */
+body.cinema-mode .hero-content-poster,
+body.cinema-mode .hero-timer-dock,
+body.cinema-mode .hero-scrim-top,
+body.cinema-mode .hero-scrim-bottom,
+body.cinema-mode .hero-vignette {
+  opacity: 0 !important;
+  pointer-events: none !important;
+  transform: translateY(18px) scale(0.97) !important;
+  filter: blur(8px) !important;
+  transition: opacity 0.5s var(--ease-apple), transform 0.5s var(--ease-apple), filter 0.5s var(--ease-apple) !important;
+}
+
+body.cinema-mode .site-header {
+  opacity: 0.15;
+  transition: opacity 0.3s ease;
+}
+
+body.cinema-mode .site-header:hover {
+  opacity: 1;
+}
+
+/* Sound Wave Animation */
+.sound-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 12px;
+}
+
+.sound-bars span {
+  width: 2px;
+  background-color: currentColor;
+  border-radius: 1px;
+  transition: height 0.2s ease;
+}
+
+.sound-bars span:nth-child(1) { height: 4px; }
+.sound-bars span:nth-child(2) { height: 10px; }
+.sound-bars span:nth-child(3) { height: 6px; }
+
+.util-btn.is-playing .sound-bars span:nth-child(1) {
+  animation: soundBarPulse 0.8s ease-in-out infinite alternate;
+}
+.util-btn.is-playing .sound-bars span:nth-child(2) {
+  animation: soundBarPulse 0.9s ease-in-out 0.2s infinite alternate;
+}
+.util-btn.is-playing .sound-bars span:nth-child(3) {
+  animation: soundBarPulse 0.7s ease-in-out 0.4s infinite alternate;
+}
+
+@keyframes soundBarPulse {
+  0% { height: 3px; }
+  100% { height: 12px; }
+}
+
+/* Primary Glass Button */
+.btn-primary-reserve {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5625rem 1.25rem;
+  border-radius: 999px;
+  background: var(--text-primary);
+  color: #070708;
+  font-family: var(--font-ui);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast), background var(--transition-fast);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+}
+
+.btn-primary-reserve:hover {
+  transform: scale(1.03);
+  background: #FFFFFF;
+  box-shadow: 0 6px 20px rgba(229, 193, 88, 0.25);
+}
+
+.btn-arrow-icon {
+  width: 12px;
+  height: 12px;
+  transition: transform var(--transition-fast);
+}
+
+.btn-primary-reserve:hover .btn-arrow-icon {
+  transform: translateX(2px);
+}
+
+/* --------------------------------------------------------------------------
+   6. HERO STAGE (FULL SCREEN PINNED SCRUB & BLANK-AREA TIMER)
+   -------------------------------------------------------------------------- */
+#hero-stage {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  min-height: 100vh;
+  overflow: hidden;
+  background: var(--bg-obsidian);
+}
+
+.hero-pin-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* The Apple-Scale Media Frame: scales from 100vw to 92vw */
+.hero-media-frame {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  min-height: 100vh;
+  border-radius: 0px;
+  overflow: hidden;
+  box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+  border: 1px solid transparent;
+  transition: border-radius 0.1s linear, border-color 0.3s ease;
+  will-change: transform, width, height, border-radius;
+}
+
+.hero-media-frame.is-pinned-scaled {
+  border-color: var(--hairline-border);
+  box-shadow: 0 32px 80px -20px rgba(0, 0, 0, 0.9);
+}
+
+.hero-video-element {
+  width: 100%;
+  height: 100%;
+  min-height: 100%;
+  object-fit: cover;
+  transform: scale(1.04);
+  display: block;
+}
+
+/* Responsive Video Source Switcher: Dedicated 9:16 video strictly for Mobile */
+.video-desktop {
+  display: block;
+}
+
+.video-mobile {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .video-desktop {
+    display: none !important;
+  }
+  .video-mobile {
+    display: block !important;
+    transform: scale(1.02);
+  }
+}
+
+/* Optical Vignette & Scrims: Disabled so video scene is 100% clear & crystal vibrant */
+.hero-vignette {
+  display: none;
+}
+
+.hero-scrim-top {
+  display: none;
+}
+
+.hero-scrim-bottom {
+  display: none;
+}
+
+/* Hero Poster Content: Sleek, compact Liquid Glass pod at bottom-left lawn */
+.hero-content-poster {
+  position: absolute;
+  bottom: clamp(1.75rem, 4vh, 3.25rem);
+  left: clamp(1.5rem, 3.8vw, 3.5rem);
+  max-width: 440px;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1.125rem 1.35rem;
+  border-radius: 20px;
+  background: rgba(10, 10, 14, 0.45);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  transition: transform var(--transition-fast), border-color var(--transition-fast);
+}
+
+.hero-content-poster:hover {
+  border-color: rgba(255, 255, 255, 0.28);
+  transform: translateY(-2px);
+}
+
+.hero-index-marker {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  color: var(--accent-spotlight);
+  text-transform: uppercase;
+}
+
+.hero-index-marker::before {
+  content: '';
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--accent-spotlight);
+  box-shadow: 0 0 8px var(--accent-spotlight);
+}
+
+.hero-headline {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 2.2vw, 2.15rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+  color: var(--text-primary);
+}
+
+.hero-subheadline {
+  font-family: var(--font-ui);
+  font-size: 0.8125rem;
+  font-weight: 400;
+  color: var(--text-secondary);
+  line-height: 1.45;
+  letter-spacing: -0.01em;
+}
+
+.hero-metadata-strip {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 0.25rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--hairline-border);
+}
+
+.meta-token {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  color: var(--text-tertiary);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.04em;
+}
+
+.meta-token svg {
+  width: 13px;
+  height: 13px;
+  color: var(--accent-spotlight);
+}
+
+/* --------------------------------------------------------------------------
+   7. LIVE BLANK-SPACE COUNTDOWN TIMER DOCK (.hero-timer-dock)
+   -------------------------------------------------------------------------- */
+.hero-timer-dock {
+  position: absolute;
+  top: var(--timer-top);
+  right: var(--timer-right);
+  bottom: var(--timer-bottom);
+  left: var(--timer-left);
+  transform: var(--timer-transform);
+  z-index: 15;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem 1.4rem;
+  border-radius: 20px;
+  background: rgba(12, 12, 16, 0.42);
+  backdrop-filter: blur(28px) saturate(190%);
+  -webkit-backdrop-filter: blur(28px) saturate(190%);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.28);
+  user-select: none;
+  cursor: default;
+  transition: box-shadow var(--transition-fast), border-color var(--transition-fast), transform var(--transition-fast);
+}
+
+.hero-timer-dock:hover {
+  border-color: rgba(255, 255, 255, 0.28);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+  transform: translateY(-2px);
+}
+
+/* Calibration Dragging State */
+.hero-timer-dock.is-calibrating {
+  cursor: grab;
+  outline: 2px dashed var(--accent-spotlight);
+  outline-offset: 4px;
+}
+
+.hero-timer-dock.is-calibrating:active {
+  cursor: grabbing;
+}
+
+.timer-dock-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  margin-bottom: 0.875rem;
+  padding-bottom: 0.625rem;
+  border-bottom: 1px solid var(--hairline-border);
+}
+
+.timer-label-box {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.timer-live-beacon {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--accent-spotlight);
+  box-shadow: 0 0 8px var(--accent-spotlight);
+  animation: beaconPulse 1.8s infinite ease-in-out;
+}
+
+@keyframes beaconPulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.85); }
+}
+
+.timer-kicker {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+}
+
+.timer-calibrate-btn {
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  letter-spacing: 0.06em;
+  color: var(--text-tertiary);
+  padding: 0.125rem 0.5rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--hairline-border);
+  transition: all var(--transition-fast);
+}
+
+.timer-calibrate-btn:hover {
+  color: var(--accent-spotlight);
+  background: rgba(229, 193, 88, 0.1);
+  border-color: rgba(229, 193, 88, 0.3);
+}
+
+/* Digit Grid */
+.timer-digits-row {
+  display: flex;
+  align-items: center;
+  gap: clamp(0.75rem, 1.8vw, 1.25rem);
+}
+
+.timer-unit-slot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: clamp(2.5rem, 4vw, 3.25rem);
+}
+
+.timer-numeric-val {
+  font-family: var(--font-mono);
+  font-size: clamp(1.6rem, 2.5vw, 2.5rem);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  color: var(--text-primary);
+  text-shadow: 0 4px 18px rgba(0, 0, 0, 0.4);
+}
+
+.timer-unit-caption {
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  margin-top: 0.35rem;
+}
+
+.timer-colon-divider {
+  font-family: var(--font-mono);
+  font-size: clamp(1.35rem, 2.2vw, 2rem);
+  font-weight: 300;
+  color: var(--accent-spotlight);
+  opacity: 0.75;
+  margin-top: -0.5rem;
+  animation: colonPulse 1s ease-in-out infinite alternate;
+}
+
+@keyframes colonPulse {
+  0% { opacity: 0.35; transform: scale(0.98); }
+  100% { opacity: 0.9; transform: scale(1.02); }
+}
+
+/* --------------------------------------------------------------------------
+   8. DEV CALIBRATION HUD & DOCK COORDINATES CONTROLLER
+   -------------------------------------------------------------------------- */
+.dev-calibration-hud {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 10001;
+  background: var(--bg-elevated);
+  border: 1px solid var(--accent-spotlight);
+  border-radius: 16px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+  max-width: 340px;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--text-primary);
+  transform: translateY(120%);
+  transition: transform 0.4s var(--ease-spring);
+}
+
+.dev-calibration-hud.is-open {
+  transform: translateY(0);
+}
+
+.hud-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--hairline-border);
+}
+
+.hud-title {
+  color: var(--accent-spotlight);
+  font-weight: 600;
+  letter-spacing: 0.05em;
+}
+
+.hud-close-btn {
+  color: var(--text-tertiary);
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.hud-coords-readout {
+  background: rgba(0, 0, 0, 0.5);
+  padding: 0.625rem;
+  border-radius: 8px;
+  border: 1px solid var(--hairline-border);
+  line-height: 1.6;
+  font-size: 0.6875rem;
+  color: var(--text-secondary);
+}
+
+.hud-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.hud-btn {
+  flex: 1;
+  padding: 0.5rem;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--hairline-border);
+  color: var(--text-primary);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  text-align: center;
+  transition: all var(--transition-fast);
+}
+
+.hud-btn:hover {
+  background: var(--accent-spotlight);
+  color: #070708;
+  border-color: var(--accent-spotlight);
+}
+
+.hud-presets {
+  display: flex;
+  gap: 0.375rem;
+  flex-wrap: wrap;
+}
+
+.preset-chip {
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.04);
+  font-size: 0.625rem;
+  border: 1px solid var(--hairline-border);
+}
+
+.preset-chip:hover {
+  border-color: var(--accent-spotlight);
+  color: var(--accent-spotlight);
+}
+
+/* Toast notification */
+.toast-notice {
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  padding: 0.75rem 1.5rem;
+  border-radius: 999px;
+  background: var(--accent-spotlight);
+  color: #070708;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  z-index: 10002;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  transition: all 0.3s var(--ease-spring);
+  pointer-events: none;
+}
+
+.toast-notice.is-visible {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+}
+
+/* --------------------------------------------------------------------------
+   9. SCROLL-PINNED HORIZONTAL GALLERY (#performances-slider)
+   -------------------------------------------------------------------------- */
+#performances-slider {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background: var(--bg-obsidian);
+}
+
+.slider-pinned-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Section Header (Fixed inside pinned viewport) */
+.slider-static-header {
+  position: absolute;
+  top: clamp(1.75rem, 5vh, 3.5rem);
+  left: clamp(1.5rem, 5vw, 4.5rem);
+  right: clamp(1.5rem, 5vw, 4.5rem);
+  z-index: 20;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  pointer-events: none;
+}
+
+.slider-headline-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.section-index-marker {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  color: var(--accent-spotlight);
+  text-transform: uppercase;
+}
+
+.section-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.75rem, 3.5vw, 3rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--text-primary);
+  line-height: 1.1;
+}
+
+.slider-meta-legend {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.legend-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent-spotlight);
+}
+
+/* Horizontal Track Scrubbed along X-axis */
+.horizontal-track {
+  display: flex;
+  align-items: center;
+  gap: clamp(2rem, 5vw, 4.5rem);
+  padding-left: clamp(1.5rem, 5vw, 4.5rem);
+  padding-right: clamp(4rem, 10vw, 8rem);
+  height: 68vh;
+  will-change: transform;
+}
+
+/* Individual Movement Slide (Cardless Architectural Frames) */
+.performance-slide {
+  position: relative;
+  flex-shrink: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  border-radius: 24px;
+  overflow: hidden;
+  border: var(--liquid-glass-border-subtle);
+  background: var(--bg-elevated);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.performance-slide:hover {
+  border-color: rgba(255, 255, 255, 0.25);
+  box-shadow: 0 32px 80px -15px rgba(0, 0, 0, 0.75);
+}
+
+/* Varied Editorial Aspect Ratios */
+.slide-width-lg { width: clamp(340px, 72vw, 1080px); }
+.slide-width-xl { width: clamp(360px, 80vw, 1200px); }
+.slide-width-cinematic { width: clamp(380px, 84vw, 1280px); }
+
+/* Background Media & Velocity Parallax Layer */
+.slide-media-layer {
+  position: absolute;
+  inset: -10%;
+  width: 120%;
+  height: 120%;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.slide-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(0.72) contrast(1.08);
+  transition: transform 0.8s var(--ease-apple), filter 0.5s ease;
+  will-change: transform;
+}
+
+.performance-slide:hover .slide-img {
+  filter: brightness(0.85) contrast(1.1);
+  transform: scale(1.04);
+}
+
+/* Gradient Mask over Slide */
+.slide-scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(7, 7, 8, 0.15) 0%,
+    rgba(7, 7, 8, 0.45) 45%,
+    rgba(7, 7, 8, 0.92) 88%,
+    rgba(7, 7, 8, 0.98) 100%
+  );
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Architectural Content Overlay */
+.slide-content-overlay {
+  position: relative;
+  z-index: 3;
+  padding: clamp(1.5rem, 3.5vw, 2.75rem);
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+}
+
+.slide-top-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.25rem;
+}
+
+.slide-numeral {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: var(--accent-spotlight);
+}
+
+.slide-venue-time {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+  color: var(--text-tertiary);
+  font-variant-numeric: tabular-nums;
+  text-transform: uppercase;
+}
+
+.slide-heading {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 2.8vw, 2.625rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  color: var(--text-primary);
+}
+
+.slide-subheading {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: clamp(1.125rem, 1.8vw, 1.5rem);
+  color: var(--accent-spotlight);
+  line-height: 1.25;
+  margin-top: -0.25rem;
+}
+
+.slide-narrative {
+  font-size: clamp(0.875rem, 1.1vw, 1rem);
+  color: var(--text-secondary);
+  line-height: 1.55;
+  max-width: 620px;
+}
+
+/* Architectural Specs Grid */
+.slide-specs-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  margin-top: 0.75rem;
+  padding-top: 0.875rem;
+  border-top: 1px solid var(--hairline-border);
+}
+
+.spec-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+}
+
+.spec-title {
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  letter-spacing: 0.1em;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+}
+
+.spec-detail {
+  font-family: var(--font-ui);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+/* Slider Bottom Control Bar */
+.slider-bottom-chrome {
+  position: absolute;
+  bottom: clamp(1.5rem, 4vh, 2.75rem);
+  left: clamp(1.5rem, 5vw, 4.5rem);
+  right: clamp(1.5rem, 5vw, 4.5rem);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  z-index: 20;
+  pointer-events: none;
+}
+
+.slider-progress-track {
+  flex: 1;
+  max-width: 480px;
+  height: 2px;
+  background: var(--hairline-border);
+  border-radius: 999px;
+  position: relative;
+  overflow: hidden;
+}
+
+.slider-progress-indicator {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 20%;
+  background: var(--accent-spotlight);
+  box-shadow: 0 0 12px var(--accent-spotlight);
+  border-radius: 999px;
+  transition: width 0.1s linear;
+}
+
+.slider-step-counter {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.12em;
+  color: var(--text-secondary);
+}
+
+.step-active {
+  color: var(--accent-spotlight);
+  font-weight: 600;
+}
+
+/* --------------------------------------------------------------------------
+   10. VERTICAL SECTION: THE EVENING ITINERARY (#itinerary)
+   -------------------------------------------------------------------------- */
+#itinerary {
+  position: relative;
+  background: var(--bg-obsidian);
+  padding: clamp(4.5rem, 10vh, 8rem) clamp(1.5rem, 5vw, 4.5rem);
+  border-top: 1px solid var(--hairline-border);
+}
+
+.itinerary-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.section-head-block {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: clamp(2.5rem, 6vh, 4rem);
+}
+
+.section-lead-copy {
+  font-size: 1.0625rem;
+  color: var(--text-secondary);
+  max-width: 580px;
+  line-height: 1.5;
+}
+
+/* Architectural Hairline Table */
+.itinerary-table {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid var(--hairline-border);
+}
+
+.itinerary-row {
+  position: relative;
+  display: grid;
+  grid-template-columns: 140px 60px 1fr 180px 180px;
+  align-items: center;
+  padding: 1.5rem 0.5rem;
+  border-bottom: 1px solid var(--hairline-border);
+  transition: background var(--transition-fast), border-color var(--transition-fast);
+  cursor: pointer;
+}
+
+.itinerary-row:hover {
+  background: rgba(255, 255, 255, 0.02);
+  border-color: rgba(255, 255, 255, 0.22);
+}
+
+.itin-time {
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-secondary);
+  transition: color var(--transition-fast);
+}
+
+.itinerary-row:hover .itin-time {
+  color: var(--accent-spotlight);
+}
+
+.itin-index {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--text-tertiary);
+}
+
+.itin-event-title {
+  font-family: var(--font-display);
+  font-size: 1.125rem;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.itin-venue {
+  font-family: var(--font-ui);
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+}
+
+.itin-host {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--text-tertiary);
+  text-align: right;
+}
+
+/* Floating Thumbnail Preview Following Cursor on Row Hover */
+.itinerary-preview-card {
+  position: fixed;
+  width: 220px;
+  height: 140px;
+  border-radius: 14px;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 1000;
+  border: var(--liquid-glass-border);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
+  opacity: 0;
+  transform: scale(0.92) translate(-50%, -50%);
+  transition: opacity 0.25s var(--ease-apple), transform 0.25s var(--ease-apple);
+}
+
+.itinerary-preview-card.is-visible {
+  opacity: 1;
+  transform: scale(1) translate(-50%, -50%);
+}
+
+.itinerary-preview-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* --------------------------------------------------------------------------
+   10b. VERTICAL SECTION: VISUAL CHRONICLES & BENTO COLLAGES (#visual-chronicles)
+   -------------------------------------------------------------------------- */
+#visual-chronicles {
+  position: relative;
+  background: var(--bg-surface);
+  padding: clamp(4.5rem, 10vh, 8rem) clamp(1.5rem, 5vw, 4.5rem);
+  border-top: 1px solid var(--hairline-border);
+}
+
+.chronicles-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.chronicles-head-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.chronicles-filter-dock {
+  display: inline-flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--hairline-border);
+  padding: 0.35rem 0.5rem;
+  border-radius: 9999px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.chronicles-pill {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+  color: var(--accent-spotlight);
+  padding: 0.35rem 0.85rem;
+  border-radius: 9999px;
+  background: rgba(230, 184, 0, 0.1);
+  border: 1px solid rgba(230, 184, 0, 0.2);
+  text-transform: uppercase;
+}
+
+.bento-collage-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+  margin-top: 3rem;
+}
+
+.bento-tile {
+  position: relative;
+  border-radius: 24px;
+  overflow: hidden;
+  background: var(--glass-card-bg);
+  border: 1px solid var(--hairline-border);
+  cursor: pointer;
+  transition: transform 0.5s var(--ease-apple), border-color 0.4s ease, box-shadow 0.5s ease;
+  min-height: 280px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+}
+
+.bento-hero {
+  grid-column: span 2;
+  grid-row: span 2;
+  min-height: 580px;
+}
+
+.bento-wide {
+  grid-column: span 2;
+  min-height: 280px;
+}
+
+.bento-tall {
+  grid-column: span 1;
+  min-height: 280px;
+}
+
+.bento-tile:hover {
+  transform: translateY(-5px);
+  border-color: rgba(255, 255, 255, 0.25);
+  box-shadow: 0 24px 50px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.1);
+}
+
+.bento-media-frame {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #0d0f14;
+}
+
+.bento-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(0.85) contrast(1.06);
+  transition: transform 0.75s var(--ease-apple), filter 0.45s ease;
+  display: block;
+}
+
+.bento-tile:hover .bento-img {
+  transform: scale(1.045);
+  filter: brightness(0.98) contrast(1.1);
+}
+
+.bento-glass-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 1.5rem 1.75rem;
+  background: linear-gradient(180deg, transparent 0%, rgba(10, 12, 16, 0.75) 30%, rgba(10, 12, 16, 0.94) 100%);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+  pointer-events: none;
+  transition: transform 0.4s var(--ease-apple);
+}
+
+.bento-badge {
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  color: var(--accent-spotlight);
+  margin-bottom: 0.35rem;
+  text-transform: uppercase;
+}
+
+.bento-card-title {
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: #FFFFFF;
+  margin: 0 0 0.3rem;
+  letter-spacing: -0.015em;
+  line-height: 1.25;
+}
+
+.bento-card-sub {
+  font-size: 0.78125rem;
+  color: var(--text-secondary);
+  margin: 0;
+  line-height: 1.45;
+}
+
+.bento-zoom-indicator {
+  position: absolute;
+  top: 1.25rem;
+  right: 1.25rem;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: rgba(14, 16, 20, 0.7);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #FFFFFF;
+  opacity: 0;
+  transform: scale(0.85);
+  transition: opacity 0.3s ease, transform 0.3s ease, background-color 0.3s ease;
+  pointer-events: none;
+}
+
+.bento-tile:hover .bento-zoom-indicator {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* --------------------------------------------------------------------------
+   LIGHTBOX MODAL
+   -------------------------------------------------------------------------- */
+.collage-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s var(--ease-apple);
+}
+
+.collage-lightbox.is-open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.lightbox-scrim {
+  position: absolute;
+  inset: 0;
+  background: rgba(5, 7, 10, 0.88);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  cursor: pointer;
+}
+
+.lightbox-dialog {
+  position: relative;
+  max-width: 1200px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 2;
+  transform: scale(0.96) translateY(10px);
+  transition: transform 0.35s var(--ease-apple);
+}
+
+.collage-lightbox.is-open .lightbox-dialog {
+  transform: scale(1) translateY(0);
+}
+
+.lightbox-close-btn {
+  position: absolute;
+  top: -3.25rem;
+  right: 0;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #FFFFFF;
+  font-size: 1.75rem;
+  line-height: 1;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.lightbox-close-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: scale(1.08);
+}
+
+.lightbox-image-wrapper {
+  width: 100%;
+  max-height: 75vh;
+  border-radius: 20px;
+  overflow: hidden;
+  background: #08090c;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 32px 80px rgba(0, 0, 0, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#lightbox-img {
+  max-width: 100%;
+  max-height: 75vh;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  display: block;
+}
+
+.lightbox-caption {
+  margin-top: 1.25rem;
+  text-align: center;
+  color: #FFFFFF;
+}
+
+#lightbox-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin: 0 0 0.25rem;
+}
+
+#lightbox-desc {
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+/* Responsive queries for Bento Grid */
+@media (max-width: 980px) {
+  .bento-collage-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .bento-hero {
+    grid-column: span 2;
+    grid-row: span 1;
+    min-height: 420px;
+  }
+  .bento-wide {
+    grid-column: span 2;
+    min-height: 260px;
+  }
+  .bento-tall {
+    grid-column: span 1;
+    min-height: 240px;
+  }
+}
+
+@media (max-width: 640px) {
+  .bento-collage-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+  .bento-hero,
+  .bento-wide,
+  .bento-tall {
+    grid-column: span 1;
+    min-height: 260px;
+  }
+  .bento-card-title {
+    font-size: 1.05rem;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   11. VERTICAL SECTION: DIGITAL ENTRY PASS GENERATOR & VENUE (#venue-passes)
+   -------------------------------------------------------------------------- */
+#venue-passes {
+  position: relative;
+  background: var(--bg-obsidian);
+  padding: clamp(4.5rem, 10vh, 8rem) clamp(1.5rem, 5vw, 4.5rem);
+  border-top: 1px solid var(--hairline-border);
+}
+
+.venue-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.pass-studio-layout {
+  display: grid;
+  grid-template-columns: 1fr 420px;
+  gap: clamp(2.5rem, 6vw, 5rem);
+  align-items: start;
+  margin-top: 3rem;
+}
+
+/* Pass Generator Form */
+.pass-config-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-label {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.1em;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+}
+
+.form-input {
+  width: 100%;
+  padding: 0.875rem 1.125rem;
+  border-radius: 12px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--hairline-border);
+  color: var(--text-primary);
+  font-size: 0.9375rem;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.form-input:focus {
+  border-color: var(--accent-spotlight);
+  box-shadow: 0 0 0 3px var(--accent-spotlight-dim);
+}
+
+.pill-selector-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.pill-option {
+  padding: 0.5rem 1rem;
+  border-radius: 999px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--hairline-border);
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  transition: all var(--transition-fast);
+}
+
+.pill-option:hover {
+  border-color: rgba(255, 255, 255, 0.25);
+  color: var(--text-primary);
+}
+
+.pill-option.is-selected {
+  background: var(--accent-spotlight);
+  color: #070708;
+  font-weight: 600;
+  border-color: var(--accent-spotlight);
+}
+
+.pass-action-buttons {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.btn-download-pass {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.875rem 1.5rem;
+  border-radius: 12px;
+  background: var(--accent-spotlight);
+  color: #070708;
+  font-weight: 600;
+  font-size: 0.875rem;
+  letter-spacing: -0.01em;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.btn-download-pass:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px var(--accent-spotlight-glow);
+}
+
+.btn-secondary-rsvp {
+  padding: 0.875rem 1.25rem;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--hairline-border);
+  color: var(--text-primary);
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: all var(--transition-fast);
+}
+
+.btn-secondary-rsvp:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+/* --------------------------------------------------------------------------
+   12. APPLE WALLET-INSPIRED LIVE PASS PREVIEW
+   -------------------------------------------------------------------------- */
+.pass-preview-stage {
+  perspective: 1200px;
+  display: flex;
+  justify-content: center;
+}
+
+.apple-pass-card {
+  position: relative;
+  width: 100%;
+  max-width: 380px;
+  border-radius: 26px;
+  background: linear-gradient(145deg, #16161a 0%, #0c0c0e 100%);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 0 30px 80px -15px rgba(0, 0, 0, 0.85), inset 0 1px 0 0 rgba(255, 255, 255, 0.35);
+  padding: 1.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  transform-style: preserve-3d;
+  transition: transform 0.25s var(--ease-apple), box-shadow 0.25s ease;
+  overflow: hidden;
+}
+
+/* Holographic Sheen Layer */
+.pass-hologram-sheen {
+  position: absolute;
+  inset: -100%;
+  background: linear-gradient(
+    115deg,
+    transparent 35%,
+    rgba(229, 193, 88, 0.12) 48%,
+    rgba(255, 255, 255, 0.22) 50%,
+    rgba(229, 193, 88, 0.12) 52%,
+    transparent 65%
+  );
+  pointer-events: none;
+  transform: translate(0, 0);
+  transition: transform 0.15s ease-out;
+}
+
+.pass-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--hairline-border);
+  padding-bottom: 1rem;
+}
+
+.pass-brand-lockup {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+}
+
+.pass-crest-mini {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  object-fit: contain;
+}
+
+.pass-school-title {
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--text-primary);
+  line-height: 1.2;
+}
+
+.pass-tier-badge {
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  padding: 0.25rem 0.625rem;
+  border-radius: 999px;
+  background: var(--accent-spotlight-dim);
+  color: var(--accent-spotlight);
+  border: 1px solid rgba(229, 193, 88, 0.3);
+  text-transform: uppercase;
+}
+
+/* Pass Attendee Details */
+.pass-attendee-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.pass-field-label {
+  font-family: var(--font-mono);
+  font-size: 0.5625rem;
+  letter-spacing: 0.12em;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+}
+
+.pass-field-name {
+  font-family: var(--font-display);
+  font-size: 1.375rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+}
+
+.pass-grid-fields {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.875rem 1rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--hairline-border);
+}
+
+.pass-field-value {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  letter-spacing: 0.02em;
+}
+
+/* Dynamic QR Code & Barcode Section */
+.pass-barcode-deck {
+  margin-top: 0.5rem;
+  padding-top: 1rem;
+  border-top: 1px dashed var(--hairline-border);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.625rem;
+}
+
+.pass-qr-frame {
+  width: 110px;
+  height: 110px;
+  background: #FFFFFF;
+  border-radius: 12px;
+  padding: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+}
+
+.pass-qr-canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.pass-serial-id {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.12em;
+  color: var(--text-tertiary);
+}
+
+/* --------------------------------------------------------------------------
+   13. VENUE SPECIFICATIONS & ARCHITECTURAL GRID
+   -------------------------------------------------------------------------- */
+.venue-specs-matrix {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.5rem;
+  margin-top: 4rem;
+  padding-top: 3rem;
+  border-top: 1px solid var(--hairline-border);
+}
+
+.venue-spec-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+  padding: 1.5rem;
+  border-radius: 16px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--hairline-border);
+}
+
+.venue-spec-icon {
+  width: 20px;
+  height: 20px;
+  color: var(--accent-spotlight);
+  margin-bottom: 0.5rem;
+}
+
+.venue-spec-title {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.1em;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+}
+
+.venue-spec-val {
+  font-family: var(--font-display);
+  font-size: 1.0625rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1.35;
+}
+
+.venue-spec-note {
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+  line-height: 1.45;
+}
+
+/* --------------------------------------------------------------------------
+   14. UNDERSTATED FOOTER
+   -------------------------------------------------------------------------- */
+.site-footer {
+  position: relative;
+  background: var(--bg-obsidian);
+  padding: 4rem clamp(1.5rem, 5vw, 4.5rem) 3rem;
+  border-top: 1px solid var(--hairline-border);
+}
+
+.footer-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+}
+
+.footer-top-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.footer-brand {
+  display: flex;
+  gap: 1.25rem;
+  max-width: 480px;
+}
+
+.footer-crest {
+  width: 52px;
+  height: 52px;
+  border-radius: 12px;
+  object-fit: contain;
+}
+
+.footer-brand-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.footer-school-title {
+  font-family: var(--font-display);
+  font-size: 1.125rem;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  color: var(--text-primary);
+}
+
+.footer-motto-quote {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--accent-spotlight);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.footer-statement {
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin-top: 0.25rem;
+}
+
+.footer-nav-col {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+}
+
+.footer-col-title {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.1em;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  margin-bottom: 0.25rem;
+}
+
+.footer-link {
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+  transition: color var(--transition-fast);
+}
+
+.footer-link:hover {
+  color: var(--text-primary);
+}
+
+.footer-bottom-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--hairline-border);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--text-tertiary);
+}
+
+.footer-legal {
+  display: flex;
+  gap: 1.5rem;
+}
+
+/* --------------------------------------------------------------------------
+   15. ACCESSIBILITY & RESPONSIVE BEHAVIOR
+   -------------------------------------------------------------------------- */
+@media (max-width: 1024px) {
+  .itinerary-row {
+    grid-template-columns: 100px 40px 1fr 140px;
+  }
+  .itin-host {
+    display: none;
+  }
+  .pass-studio-layout {
+    grid-template-columns: 1fr;
+    justify-items: center;
+  }
+  .pass-config-form {
+    width: 100%;
+    max-width: 580px;
+  }
+}
+
+@media (max-width: 768px) {
+  /* Ultra-polished mobile header */
+  .site-header {
+    padding: 0.5rem 0.65rem !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 0.5rem !important;
+  }
+
+  .header-brand {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 0.55rem !important;
+    padding: 0.28rem 0.75rem 0.28rem 0.35rem !important;
+    border-radius: 9999px !important;
+    background: rgba(10, 12, 16, 0.75) !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45) !important;
+    max-width: calc(100vw - 120px) !important;
+    flex-shrink: 0 !important;
+  }
+
+  .crest-frame {
+    width: 32px !important;
+    height: 32px !important;
+    min-width: 32px !important;
+    border-radius: 50% !important;
+    padding: 2px !important;
+    background: rgba(255, 255, 255, 0.12) !important;
+    border: 1px solid rgba(255, 255, 255, 0.25) !important;
+    flex-shrink: 0 !important;
+  }
+
+  .crest-image {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: contain !important;
+  }
+
+  .brand-meta {
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    gap: 1px !important;
+    min-width: 0 !important;
+  }
+
+  .school-name {
+    font-size: 0.72rem !important;
+    font-weight: 700 !important;
+    color: #FFFFFF !important;
+    white-space: nowrap !important;
+    line-height: 1.15 !important;
+    letter-spacing: 0.01em !important;
+    overflow: visible !important;
+    text-overflow: clip !important;
+    max-width: none !important;
+  }
+
+  .school-motto {
+    display: block !important;
+    font-size: 0.54rem !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.08em !important;
+    color: var(--accent-spotlight) !important;
+    text-transform: uppercase !important;
+    white-space: nowrap !important;
+    line-height: 1.1 !important;
+    margin-top: 1px !important;
+    opacity: 0.95 !important;
+    overflow: visible !important;
+    text-overflow: clip !important;
+    max-width: none !important;
+  }
+
+  .header-glass-dock {
+    padding: 0.2rem 0.35rem 0.2rem 0.45rem !important;
+    gap: 0.25rem !important;
+    flex-shrink: 0 !important;
+  }
+
+  .header-utilities {
+    margin-left: 0.15rem !important;
+    padding-left: 0.15rem !important;
+    gap: 0.2rem !important;
+  }
+
+  #util-btn-cinema,
+  #util-btn-contrast {
+    display: none !important;
+  }
+
+  .util-btn {
+    width: 28px !important;
+    height: 28px !important;
+  }
+
+  .btn-reserve-text-full {
+    display: none !important;
+  }
+
+  .btn-reserve-text-mobile {
+    display: inline !important;
+  }
+
+  .btn-primary-reserve {
+    white-space: nowrap !important;
+    padding: 0.38rem 0.65rem !important;
+    font-size: 0.72rem !important;
+    gap: 0.25rem !important;
+  }
+
+  .btn-arrow-icon {
+    width: 9px !important;
+    height: 9px !important;
+  }
+
+  /* Dedicated 9:16 Mobile Negative Space Placement */
+  /* Event Pod: Positioned in the middle sunset sky band (between ANNUAL FUNCTION & Building) */
+  .hero-content-poster {
+    top: 48% !important;
+    bottom: auto !important;
+    left: 1rem !important;
+    right: 1rem !important;
+    max-width: calc(100vw - 2rem) !important;
+    padding: 0.65rem 0.9rem !important;
+    border-radius: 16px !important;
+    background: rgba(10, 10, 14, 0.4) !important;
+    backdrop-filter: blur(24px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(24px) saturate(180%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.14) !important;
+    text-align: center;
+    align-items: center;
+  }
+
+  .hero-index-marker {
+    font-size: 0.625rem !important;
+  }
+
+  .hero-headline {
+    font-size: 1.25rem !important;
+    line-height: 1.1 !important;
+  }
+
+  .hero-subheadline {
+    font-size: 0.6875rem !important;
+    line-height: 1.35 !important;
+    max-width: 320px;
+  }
+
+  .hero-metadata-strip {
+    justify-content: center !important;
+    gap: 0.75rem !important;
+    margin-top: 0.15rem !important;
+    padding-top: 0.35rem !important;
+  }
+
+  .meta-token {
+    font-size: 0.625rem !important;
+  }
+
+  /* Timer Dock: Positioned over lower red carpet foreground */
+  .hero-timer-dock {
+    top: auto !important;
+    right: 1rem !important;
+    left: 1rem !important;
+    bottom: 1rem !important;
+    transform: none !important;
+    padding: 0.75rem 0.875rem !important;
+    border-radius: 16px !important;
+    background: rgba(10, 10, 14, 0.42) !important;
+    backdrop-filter: blur(24px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(24px) saturate(180%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.14) !important;
+  }
+
+  .timer-dock-header {
+    margin-bottom: 0.5rem !important;
+    padding-bottom: 0.4rem !important;
+  }
+
+  .timer-kicker {
+    font-size: 0.5625rem !important;
+  }
+
+  .timer-digits-row {
+    gap: 0.25rem !important;
+    justify-content: space-around !important;
+  }
+
+  .timer-unit-slot {
+    min-width: 2.15rem !important;
+  }
+
+  .timer-numeric-val {
+    font-size: 1.35rem !important;
+  }
+
+  .timer-unit-caption {
+    font-size: 0.5625rem !important;
+    margin-top: 0.2rem !important;
+  }
+
+  .timer-colon-divider {
+    font-size: 1.1rem !important;
+    margin-top: -0.2rem !important;
+  }
+
+  .header-nav {
+    display: none; /* Direct RSVP CTA on mobile */
+  }
+
+  .itinerary-row {
+    grid-template-columns: 80px 1fr;
+    gap: 0.5rem;
+  }
+
+  .itin-index, .itin-venue {
+    display: none;
+  }
+
+  .slide-specs-grid {
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .site-header {
+    padding: 0.45rem 0.55rem !important;
+  }
+
+  .header-brand {
+    padding: 0.2rem 0.55rem 0.2rem 0.3rem !important;
+    gap: 0.45rem !important;
+  }
+
+  .crest-frame {
+    width: 28px !important;
+    height: 28px !important;
+    min-width: 28px !important;
+    border-radius: 50% !important;
+    padding: 1.5px !important;
+  }
+
+  .school-name {
+    font-size: 0.6875rem !important;
+    font-weight: 700 !important;
+    white-space: nowrap !important;
+    line-height: 1.15 !important;
+    letter-spacing: -0.01em !important;
+  }
+
+  .school-motto {
+    display: block !important;
+    font-size: 0.48rem !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.05em !important;
+    white-space: nowrap !important;
+    line-height: 1.1 !important;
+  }
+
+  #util-btn-contrast {
+    display: none !important;
+  }
+
+  .header-glass-dock {
+    padding: 0.18rem 0.25rem 0.18rem 0.35rem !important;
+    gap: 0.2rem !important;
+  }
+
+  .util-btn {
+    width: 26px !important;
+    height: 26px !important;
+  }
+
+  .btn-primary-reserve {
+    padding: 0.32rem 0.5rem !important;
+    font-size: 0.6875rem !important;
+    gap: 0.2rem !important;
+  }
+}
+
+/* Native scroll-snap fallback for reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .horizontal-track {
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+  }
+
+  .performance-slide {
+    scroll-snap-align: start;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   16. PRINT STYLESHEET (Official Pass Card Print View)
+   -------------------------------------------------------------------------- */
+@media print {
+  body {
+    background: #FFFFFF !important;
+    color: #000000 !important;
+  }
+
+  .site-header,
+  #hero-stage,
+  #performances-slider,
+  #itinerary,
+  .venue-specs-matrix,
+  .pass-config-form,
+  .site-footer,
+  .film-grain-overlay,
+  .cursor-dot,
+  .cursor-pill,
+  .dev-calibration-hud {
+    display: none !important;
+  }
+
+  #venue-passes {
+    padding: 0 !important;
+    border: none !important;
+    background: #FFFFFF !important;
+  }
+
+  .pass-studio-layout {
+    display: block !important;
+    margin: 0 !important;
+  }
+
+  .pass-preview-stage {
+    perspective: none !important;
+  }
+
+  .apple-pass-card {
+    max-width: 480px !important;
+    margin: 2cm auto !important;
+    background: #111114 !important;
+    color: #FFFFFF !important;
+    border: 2px solid #000000 !important;
+    box-shadow: none !important;
+    page-break-inside: avoid;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}

@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="description" content="AETHERIA 2026 — The Annual Cultural & Academic Gala of St. Joseph's School, Kajipur. An extraordinary symphony of music, dance, theatre, and scholarly achievement.">
+  <meta name="theme-color" content="#070708">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  
+  <title>AETHERIA 2026 — Annual Cultural & Academic Gala | St. Joseph's School, Kajipur</title>
+
+  <!-- Preconnect & Official Google Fonts (Strict Anti-Slop: Neo-Grotesk + Editorial Serif + Monospace) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Core Apple Liquid Glass Stylesheet -->
+  <link rel="stylesheet" href="css/style.css?v=20261023d">
+</head>
+<body>
+
+  <!-- ========================================================================
+       1. TACTILE FILM GRAIN OVERLAY (Fixed SVG feTurbulence at 0.035 opacity)
+       ======================================================================== -->
+  <svg class="film-grain-overlay" aria-hidden="true">
+    <filter id="film-grain">
+      <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" result="noise" />
+      <feColorMatrix type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 0.035 0" />
+    </filter>
+    <rect width="100%" height="100%" filter="url(#film-grain)" />
+  </svg>
+
+  <!-- ========================================================================
+       2. MAGNETIC CUSTOM CURSOR FOLLOWER
+       ======================================================================== -->
+  <div class="cursor-dot" aria-hidden="true"></div>
+  <div class="cursor-pill" aria-hidden="true"></div>
+
+  <!-- ========================================================================
+       3. FLOATING TOP OPTICAL HEADER (School Crest + Minimal Liquid Glass Dock)
+       ======================================================================== -->
+  <header class="site-header" role="banner">
+    <!-- Left Anchor: School Crest & Formal Name -->
+    <a href="#hero-stage" class="header-brand" aria-label="St. Joseph's Senior Sec. School, Kazipur, Kaushambi — Home">
+      <div class="crest-frame">
+        <img src="assets/school-logo.png" alt="St. Joseph's Senior Sec. School Crest" class="crest-image" onerror="this.src='assets/school logo (2).png'">
+      </div>
+      <div class="brand-meta">
+        <span class="school-name">ST. JOSEPH'S SR. SEC. SCHOOL</span>
+        <span class="school-motto">KAZIPUR, KAUSHAMBI</span>
+      </div>
+    </a>
+
+    <!-- Center/Right Anchor: Apple Liquid Glass Floating Capsule -->
+    <div class="header-glass-dock">
+      <nav class="header-nav" aria-label="Main Navigation">
+        <a href="#hero-stage" class="nav-link is-active">Overture</a>
+        <a href="#performances-slider" class="nav-link">Lineup</a>
+        <a href="#itinerary" class="nav-link">Itinerary</a>
+        <a href="#visual-chronicles" class="nav-link">Collages</a>
+        <a href="#venue-passes" class="nav-link">Venue & Passes</a>
+      </nav>
+
+      <div class="header-utilities">
+        <!-- Ambient Soundscape Toggle with Waveform Bars -->
+        <button id="util-btn-audio" class="util-btn" aria-label="Toggle Gala Ambient Soundscape" title="Ambient Sound">
+          <div class="sound-bars" aria-hidden="true">
+            <span></span><span></span><span></span>
+          </div>
+        </button>
+
+        <!-- Pure Stage Cinema / Showcase Mode Toggle -->
+        <button id="util-btn-cinema" class="util-btn" aria-label="Toggle Pure Cinema Stage View" title="Clear All Overlays & View Full Scene">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+            <circle cx="12" cy="12" r="3"></circle>
+          </svg>
+        </button>
+
+        <!-- High-Contrast Accessibility Mode Toggle -->
+        <button id="util-btn-contrast" class="util-btn" aria-label="Toggle High-Contrast Mode" title="Accessibility Contrast">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="10"></circle>
+            <path d="M12 2a10 10 0 0 1 0 20z"></path>
+          </svg>
+        </button>
+      </div>
+
+      <!-- High-Contrast Primary CTA -->
+      <a href="#venue-passes" class="btn-primary-reserve">
+        <span class="btn-reserve-text-full">Reserve Seat</span>
+        <span class="btn-reserve-text-mobile">Pass</span>
+        <svg class="btn-arrow-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <line x1="3" y1="8" x2="13" y2="8"></line>
+          <polyline points="9 4 13 8 9 12"></polyline>
+        </svg>
+      </a>
+    </div>
+  </header>
+
+  <!-- ========================================================================
+       4. HERO STAGE: FULL-SCREEN LOOPING VIDEO + BLANK-SPACE TIMER + PINNED SCRUB
+       ======================================================================== -->
+  <section id="hero-stage" aria-label="Hero Stage">
+    <div class="hero-pin-wrapper">
+      
+      <!-- Scalable Media Frame: GSAP scrubs from 100vw to 92vw with 28px border-radius -->
+      <div class="hero-media-frame">
+        <!-- Desktop / Tablet Widescreen Video -->
+        <video class="hero-video-element video-desktop" autoplay muted loop playsinline preload="auto" poster="assets/hero-poster.png">
+          <source src="assets/hero-video-1080.mp4" type="video/mp4" media="(max-width: 1920px)">
+          <source src="assets/hero-video.mp4" type="video/mp4">
+          <img src="assets/hero-poster.png" alt="Aetheria 2026 Stage Facade">
+        </video>
+
+        <!-- Mobile Dedicated Vertical 9:16 Video (Animate_school_annual_function_i…_20261023030547-upscaled-2x) -->
+        <video class="hero-video-element video-mobile" autoplay muted loop playsinline preload="auto" poster="assets/hero-poster-mobile.png">
+          <source src="assets/hero-video-mobile-1080.mp4" type="video/mp4">
+          <source src="assets/hero-video-mobile.mp4" type="video/mp4">
+          <img src="assets/hero-poster-mobile.png" alt="Aetheria 2026 Stage Facade Mobile">
+        </video>
+
+        <!-- Optical Vignette: leaves center & negative space pristine, anchors perimeter -->
+        <div class="hero-vignette" aria-hidden="true"></div>
+        <div class="hero-scrim-top" aria-hidden="true"></div>
+        <div class="hero-scrim-bottom" aria-hidden="true"></div>
+      </div>
+
+      <!-- Poster Typography: Concise, Atmospheric, Scannable (Anthropic / OpenAI Doctrine) -->
+      <div class="hero-content-poster">
+        <div class="hero-index-marker">00 / THE CONVOCATION</div>
+        <h1 class="hero-headline">AETHERIA 2026</h1>
+        <p class="hero-subheadline">
+          The Annual Cultural & Academic Gala of St. Joseph's Senior Sec. School, Kazipur, Kaushambi. Saturday, 5 December 2026. An extraordinary evening of symphonic overtures, theatrical productions, and the scholarly roll of honour.
+        </p>
+        <div class="hero-metadata-strip">
+          <div class="meta-token">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+            <span>5 DECEMBER 2026</span>
+          </div>
+          <div class="meta-token">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+            <span>17:30 IST</span>
+          </div>
+          <div class="meta-token">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+            <span>MAIN AUDITORIUM & LAWNS</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Live Countdown Timer Dock (Positioned in designated Blank/Negative Space) -->
+      <div class="hero-timer-dock" role="region" aria-label="Event Countdown">
+        <div class="timer-dock-header">
+          <div class="timer-label-box">
+            <span class="timer-live-beacon" aria-hidden="true"></span>
+            <span class="timer-kicker">STAGE OVERTURE SYNC</span>
+          </div>
+          <!-- Quick on-screen Dev Calibration Trigger -->
+          <button id="timer-calibrate-trigger" class="timer-calibrate-btn" title="Drag & fine-tune negative space position">Calibrate</button>
+        </div>
+
+        <!-- Tabular-Nums Monospace Countdown Digits -->
+        <div class="timer-digits-row">
+          <div class="timer-unit-slot">
+            <span id="timer-days" class="timer-numeric-val">36</span>
+            <span class="timer-unit-caption">DAYS</span>
+          </div>
+          <span class="timer-colon-divider" aria-hidden="true">:</span>
+          <div class="timer-unit-slot">
+            <span id="timer-hours" class="timer-numeric-val">14</span>
+            <span class="timer-unit-caption">HRS</span>
+          </div>
+          <span class="timer-colon-divider" aria-hidden="true">:</span>
+          <div class="timer-unit-slot">
+            <span id="timer-minutes" class="timer-numeric-val">45</span>
+            <span class="timer-unit-caption">MIN</span>
+          </div>
+          <span class="timer-colon-divider" aria-hidden="true">:</span>
+          <div class="timer-unit-slot">
+            <span id="timer-seconds" class="timer-numeric-val">18</span>
+            <span class="timer-unit-caption">SEC</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       5. DEV CALIBRATION HUD (Active with ?calibrate=true or via toggle)
+       ======================================================================== -->
+  <aside class="dev-calibration-hud" aria-label="Timer Dock Calibration Tool">
+    <div class="hud-header">
+      <span class="hud-title">BLANK-SPACE CALIBRATOR</span>
+      <button id="hud-close-btn" class="hud-close-btn" aria-label="Close Calibration HUD">&times;</button>
+    </div>
+    <p style="font-size: 0.6875rem; color: var(--text-secondary); margin: 0;">
+      Drag the countdown box over your video frame to pin its negative space coordinates.
+    </p>
+    <div id="hud-readout-text" class="hud-coords-readout">
+      --timer-top: clamp(6.25rem, 15vh, 9.5rem);<br>
+      --timer-right: clamp(1.5rem, 4.8vw, 4.5rem);
+    </div>
+    <div class="hud-presets">
+      <button class="preset-chip" data-preset="top-right">Top Right</button>
+      <button class="preset-chip" data-preset="top-left">Top Left</button>
+      <button class="preset-chip" data-preset="bottom-right">Bottom Right</button>
+      <button class="preset-chip" data-preset="bottom-left">Bottom Left</button>
+    </div>
+    <div class="hud-actions">
+      <button id="hud-btn-copy" class="hud-btn">Copy CSS Rules</button>
+    </div>
+  </aside>
+
+  <!-- Toast Notification -->
+  <div class="toast-notice" role="status" aria-live="polite"></div>
+
+  <!-- ========================================================================
+       6. SCROLL-DRIVEN HORIZONTAL GALLERY (#performances-slider)
+       ======================================================================== -->
+  <section id="performances-slider" aria-label="Curated Performances">
+    <div class="slider-pinned-container">
+      
+      <!-- Pinned Section Header -->
+      <div class="slider-static-header">
+        <div class="slider-headline-group">
+          <span class="section-index-marker">01 / CURATED ACTS</span>
+          <h2 class="section-title">The Five Movements</h2>
+        </div>
+        <div class="slider-meta-legend">
+          <span class="legend-dot" aria-hidden="true"></span>
+          <span>STAGE REEL · 5 ACTS · LIVE ENSEMBLE</span>
+        </div>
+      </div>
+
+      <!-- Horizontal Pinned Track scrubbed along X-axis via Wheel/Touch -->
+      <div class="horizontal-track">
+
+        <!-- Act 01: The Grand Overture -->
+        <article class="performance-slide slide-width-lg" aria-label="Act 01: The Grand Overture">
+          <div class="slide-media-layer">
+            <img src="assets/collages/act_01_collage.jpg" alt="St. Joseph's School Annual Concert Performance Collage" class="slide-img" loading="lazy">
+          </div>
+          <div class="slide-scrim" aria-hidden="true"></div>
+          <div class="slide-content-overlay">
+            <div class="slide-top-meta">
+              <span class="slide-numeral">ACT 01</span>
+              <span class="slide-venue-time">17:30 IST · MAIN AUDITORIUM</span>
+            </div>
+            <h3 class="slide-heading">The Grand Overture</h3>
+            <p class="slide-subheading">Symphony Orchestra & Senior Choir</p>
+            <p class="slide-narrative">
+              The gala commences with Beethoven's Ode to Joy and an original symphonic suite "Aetheria", conducted by Maestro D. K. Sharma. A layered acoustic journey celebrating forty-two years of institutional heritage.
+            </p>
+            <div class="slide-specs-grid">
+              <div class="spec-item">
+                <span class="spec-title">Conductor</span>
+                <span class="spec-detail">Maestro D. K. Sharma</span>
+              </div>
+              <div class="spec-item">
+                <span class="spec-title">Ensemble</span>
+                <span class="spec-detail">Senior Vocalists</span>
+              </div>
+              <div class="spec-item">
+                <span class="spec-title">Key Signature</span>
+                <span class="spec-detail">D Major Symphonic</span>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Act 02: Natya & Kinetic Rhythm -->
+        <article class="performance-slide slide-width-xl" aria-label="Act 02: Natya & Kinetic Rhythm">
+          <div class="slide-media-layer">
+            <img src="assets/collages/act_02_collage.jpg" alt="St. Joseph's students classical balance dance collage" class="slide-img" loading="lazy">
+          </div>
+          <div class="slide-scrim" aria-hidden="true"></div>
+          <div class="slide-content-overlay">
+            <div class="slide-top-meta">
+              <span class="slide-numeral">ACT 02</span>
+              <span class="slide-venue-time">18:15 IST · AMPHITHEATRE STAGE</span>
+            </div>
+            <h3 class="slide-heading">Natya & Kinetic Rhythm</h3>
+            <p class="slide-subheading">Folk, Classical & Traditional Balance Dance</p>
+            <p class="slide-narrative">
+              An evocative exploration of elemental rhythm and ancient Indian folk traditions, featuring balance pot dances and rhythmic footwork by St. Joseph's students.
+            </p>
+            <div class="slide-specs-grid">
+              <div class="spec-item">
+                <span class="spec-title">Choreography</span>
+                <span class="spec-detail">Smt. Ananya Sen</span>
+              </div>
+              <div class="spec-item">
+                <span class="spec-title">Rhythm Cycle</span>
+                <span class="spec-detail">Teentaal & Folk Cadence</span>
+              </div>
+              <div class="spec-item">
+                <span class="spec-title">Troupe</span>
+                <span class="spec-detail">Senior Dance Guild</span>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Act 03: The Thespian Stage -->
+        <article class="performance-slide slide-width-cinematic" aria-label="Act 03: The Thespian Stage">
+          <div class="slide-media-layer">
+            <img src="assets/collages/act_03_collage.jpg" alt="St. Joseph's student actors and dramatic production collage" class="slide-img" loading="lazy">
+          </div>
+          <div class="slide-scrim" aria-hidden="true"></div>
+          <div class="slide-content-overlay">
+            <div class="slide-top-meta">
+              <span class="slide-numeral">ACT 03</span>
+              <span class="slide-venue-time">19:00 IST · AUDITORIUM GRANDE</span>
+            </div>
+            <h3 class="slide-heading">The Thespian Stage</h3>
+            <p class="slide-subheading">Original Production: "The Alchemist of Time"</p>
+            <p class="slide-narrative">
+              Set across three historical eras, this student-penned drama examines the fragility of ambition and the eternal pursuit of wisdom. Featuring student actors, bespoke period costuming, and cinematic stage illumination.
+            </p>
+            <div class="slide-specs-grid">
+              <div class="spec-item">
+                <span class="spec-title">Direction</span>
+                <span class="spec-detail">Kabir Mukherjee ('27)</span>
+              </div>
+              <div class="spec-item">
+                <span class="spec-title">Cast Size</span>
+                <span class="spec-detail">34 Student Thespians</span>
+              </div>
+              <div class="spec-item">
+                <span class="spec-title">Runtime</span>
+                <span class="spec-detail">42 Minutes (Single Act)</span>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Act 04: Honours & Valedictory Keynote -->
+        <article class="performance-slide slide-width-lg" aria-label="Act 04: Honours & Valedictory Keynote">
+          <div class="slide-media-layer">
+            <img src="assets/collages/act_04_collage.jpg" alt="Scholastic convocation honours and ceremony collage" class="slide-img" loading="lazy">
+          </div>
+          <div class="slide-scrim" aria-hidden="true"></div>
+          <div class="slide-content-overlay">
+            <div class="slide-top-meta">
+              <span class="slide-numeral">ACT 04</span>
+              <span class="slide-venue-time">19:50 IST · CONVOCATION HALL</span>
+            </div>
+            <h3 class="slide-heading">Honours & Valedictory Keynote</h3>
+            <p class="slide-subheading">Scholarly Roll of Honour & Presidential Address</p>
+            <p class="slide-narrative">
+              Conferment of the Gold Medal of Valour, the Principal's Silver Quill, and National Olympiad Distinctions. Featuring the keynote address by Hon. Chief Guest Dr. Rajeshwari Varma, Director of the Indian Institute of Science.
+            </p>
+            <div class="slide-specs-grid">
+              <div class="spec-item">
+                <span class="spec-title">Chief Guest</span>
+                <span class="spec-detail">Dr. Rajeshwari Varma</span>
+              </div>
+              <div class="spec-item">
+                <span class="spec-title">Medallists</span>
+                <span class="spec-detail">48 Scholastic Laureates</span>
+              </div>
+              <div class="spec-item">
+                <span class="spec-title">Trophy</span>
+                <span class="spec-detail">The Cock-House Shield</span>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Act 05: Crescendo & Finale -->
+        <article class="performance-slide slide-width-xl" aria-label="Act 05: Crescendo & Finale">
+          <div class="slide-media-layer">
+            <img src="assets/collages/act_05_collage.jpg" alt="Grand finale ensemble and pyrotechnics collage" class="slide-img" loading="lazy">
+          </div>
+          <div class="slide-scrim" aria-hidden="true"></div>
+          <div class="slide-content-overlay">
+            <div class="slide-top-meta">
+              <span class="slide-numeral">ACT 05</span>
+              <span class="slide-venue-time">20:40 IST · CENTRAL AUDITORIUM LAWNS</span>
+            </div>
+            <h3 class="slide-heading">Crescendo & Finale</h3>
+            <p class="slide-subheading">All-School Anthem & Stage Illumination</p>
+            <p class="slide-narrative">
+              The entire student body unites under illuminated autumn skies for the school anthem "Always Aim High". The evening culminates in an architectural laser choreography and synchronized cold-spark pyrotechnic display.
+            </p>
+            <div class="slide-specs-grid">
+              <div class="spec-item">
+                <span class="spec-title">Ensemble</span>
+                <span class="spec-detail">600 Students & Faculty</span>
+              </div>
+              <div class="spec-item">
+                <span class="spec-title">Pyrotechnics</span>
+                <span class="spec-detail">Synchronized Cold Sparks</span>
+              </div>
+              <div class="spec-item">
+                <span class="spec-title">Anthem</span>
+                <span class="spec-detail">Always Aim High</span>
+              </div>
+            </div>
+          </div>
+        </article>
+
+      </div>
+
+      <!-- Slider Bottom Chrome (Progress Line + Slide Counter) -->
+      <div class="slider-bottom-chrome">
+        <div class="slider-progress-track">
+          <div class="slider-progress-indicator"></div>
+        </div>
+        <div class="slider-step-counter">
+          <span class="step-active">01</span> / 05
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       7. THE EVENING ITINERARY (Cardless Architectural Hairline Table)
+       ======================================================================== -->
+  <section id="itinerary" aria-label="Evening Itinerary">
+    <div class="itinerary-inner">
+      
+      <div class="section-head-block">
+        <span class="section-index-marker">02 / THE ITINERARY</span>
+        <h2 class="section-title">Order of Proceedings</h2>
+        <p class="section-lead-copy">
+          A precisely timed architectural sequence across the St. Joseph's Auditorium, Quadrangle, and Central Lawns.
+        </p>
+      </div>
+
+      <!-- Hairline Table (Hover row reveals floating preview thumbnail) -->
+      <div class="itinerary-table" role="table">
+
+        <!-- Row 1 -->
+        <div class="itinerary-row" role="row" data-preview="assets/collages/itin_01.jpg">
+          <span class="itin-time" role="cell">16:30 IST</span>
+          <span class="itin-index" role="cell">01</span>
+          <div class="itin-event-title" role="cell">
+            <span>Red Carpet Arrival & Alumni Reception</span>
+          </div>
+          <span class="itin-venue" role="cell">North Courtyard</span>
+          <span class="itin-host" role="cell">Prefectorial Council</span>
+        </div>
+
+        <!-- Row 2 -->
+        <div class="itinerary-row" role="row" data-preview="assets/collages/itin_02.jpg">
+          <span class="itin-time" role="cell">17:15 IST</span>
+          <span class="itin-index" role="cell">02</span>
+          <div class="itin-event-title" role="cell">
+            <span>Lighting of the Ceremonial Lamp & Invocation</span>
+          </div>
+          <span class="itin-venue" role="cell">Main Auditorium Stage</span>
+          <span class="itin-host" role="cell">Board of Governors</span>
+        </div>
+
+        <!-- Row 3 -->
+        <div class="itinerary-row" role="row" data-preview="assets/collages/itin_03.jpg">
+          <span class="itin-time" role="cell">17:30 IST</span>
+          <span class="itin-index" role="cell">03</span>
+          <div class="itin-event-title" role="cell">
+            <span>Movement I: The Grand Symphonic Overture</span>
+          </div>
+          <span class="itin-venue" role="cell">Auditorium Orchestra Pit</span>
+          <span class="itin-host" role="cell">Senior School Choir</span>
+        </div>
+
+        <!-- Row 4 -->
+        <div class="itinerary-row" role="row" data-preview="assets/collages/itin_04.jpg">
+          <span class="itin-time" role="cell">18:15 IST</span>
+          <span class="itin-index" role="cell">04</span>
+          <div class="itin-event-title" role="cell">
+            <span>Movement II: Natya & Kinetic Rhythm</span>
+          </div>
+          <span class="itin-venue" role="cell">Amphitheatre Stage</span>
+          <span class="itin-host" role="cell">Senior Dance Troupe</span>
+        </div>
+
+        <!-- Row 5 -->
+        <div class="itinerary-row" role="row" data-preview="assets/collages/itin_05.jpg">
+          <span class="itin-time" role="cell">19:00 IST</span>
+          <span class="itin-index" role="cell">05</span>
+          <div class="itin-event-title" role="cell">
+            <span>Movement III: Drama "The Alchemist of Time"</span>
+          </div>
+          <span class="itin-venue" role="cell">Auditorium Grande</span>
+          <span class="itin-host" role="cell">Thespian Guild</span>
+        </div>
+
+        <!-- Row 6 -->
+        <div class="itinerary-row" role="row" data-preview="assets/collages/itin_06.jpg">
+          <span class="itin-time" role="cell">19:50 IST</span>
+          <span class="itin-index" role="cell">06</span>
+          <div class="itin-event-title" role="cell">
+            <span>Movement IV: Academic Honours & Valedictory</span>
+          </div>
+          <span class="itin-venue" role="cell">Convocation Stage</span>
+          <span class="itin-host" role="cell">Dr. R. Varma & Principal</span>
+        </div>
+
+        <!-- Row 7 -->
+        <div class="itinerary-row" role="row" data-preview="assets/collages/itin_07.jpg">
+          <span class="itin-time" role="cell">20:40 IST</span>
+          <span class="itin-index" role="cell">07</span>
+          <div class="itin-event-title" role="cell">
+            <span>Movement V: Grand Choral Finale & Cold Sparks</span>
+          </div>
+          <span class="itin-venue" role="cell">Central Auditorium Lawns</span>
+          <span class="itin-host" role="cell">All-School Ensemble</span>
+        </div>
+
+        <!-- Row 8 -->
+        <div class="itinerary-row" role="row" data-preview="assets/collages/itin_08.jpg">
+          <span class="itin-time" role="cell">21:15 IST</span>
+          <span class="itin-index" role="cell">08</span>
+          <div class="itin-event-title" role="cell">
+            <span>Banquet Gala & Fellowship Dinner</span>
+          </div>
+          <span class="itin-venue" role="cell">Heritage Quadrangle</span>
+          <span class="itin-host" role="cell">Patrons & Parents</span>
+        </div>
+
+      </div>
+
+      <!-- Dynamic Floating Hover Thumbnail -->
+      <div class="itinerary-preview-card" aria-hidden="true">
+        <img src="" alt="Itinerary event preview">
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       7b. VISUAL CHRONICLES: STAGE BENTO COLLAGES (#visual-chronicles)
+       ======================================================================== -->
+  <section id="visual-chronicles" aria-label="Visual Chronicles and Stage Collages">
+    <div class="chronicles-inner">
+      
+      <div class="section-head-block">
+        <div class="chronicles-head-row">
+          <div>
+            <span class="section-index-marker">03 / VISUAL CHRONICLES</span>
+            <h2 class="section-title">Stage Tapestry & Collages</h2>
+            <p class="section-lead-copy">
+              Curated multi-frame high-density collages capturing the vibrant folk traditions, classical balance dances, student dramas, and convocation honours at St. Joseph's Senior Secondary School.
+            </p>
+          </div>
+          <!-- Filter / Badge Pill -->
+          <div class="chronicles-filter-dock">
+            <span class="chronicles-pill is-active">20+ Archival Moments Combined</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Apple Bento Grid of Collages -->
+      <div class="bento-collage-grid">
+        
+        <!-- Bento 1: Cinematic Panoramic Mosaic (Spans 2 cols, 2 rows) -->
+        <article class="bento-tile bento-hero" data-modal-src="assets/collages/mosaic_cinematic.jpg" data-modal-title="The Complete Convocation Tapestry" data-modal-desc="Five-panel archival stage collage highlighting student thespians, balance dancers, and ceremonial addresses.">
+          <div class="bento-media-frame">
+            <img src="assets/collages/mosaic_cinematic.jpg" alt="St. Joseph's Convocation Tapestry Collage" class="bento-img" loading="lazy">
+          </div>
+          <div class="bento-glass-overlay">
+            <div class="bento-badge">CINEMATIC MOSAIC · 5 PANELS</div>
+            <h3 class="bento-card-title">The Complete Convocation Tapestry</h3>
+            <p class="bento-card-sub">Student performers, ceremonial addresses, and traditional rhythm</p>
+          </div>
+          <div class="bento-zoom-indicator" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+          </div>
+        </article>
+
+        <!-- Bento 2: Master Mosaic 1 (Spans 2 cols) -->
+        <article class="bento-tile bento-wide" data-modal-src="assets/collages/master_mosaic_1.jpg" data-modal-title="The Symphony, Choir & Stage Ensemble" data-modal-desc="Six-shot master collage celebrating the grand opening and vocal performances.">
+          <div class="bento-media-frame">
+            <img src="assets/collages/master_mosaic_1.jpg" alt="Stage Ensemble Master Mosaic" class="bento-img" loading="lazy">
+          </div>
+          <div class="bento-glass-overlay">
+            <div class="bento-badge">STAGE ENSEMBLE · 6 SHOTS</div>
+            <h3 class="bento-card-title">The Symphony & Vocal Harmonic</h3>
+            <p class="bento-card-sub">Auditorium stage lighting, choir harmonies, and ceremonial honours</p>
+          </div>
+          <div class="bento-zoom-indicator" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+          </div>
+        </article>
+
+        <!-- Bento 3: Triptych 1 (Classical Natya & Folk) -->
+        <article class="bento-tile bento-tall" data-modal-src="assets/collages/triptych_01.jpg" data-modal-title="Natya & Folk Cadence Triptych" data-modal-desc="Three-panel vertical composite featuring traditional balance pot dancing and folk routines.">
+          <div class="bento-media-frame">
+            <img src="assets/collages/triptych_01.jpg" alt="Natya Triptych Collage" class="bento-img" loading="lazy">
+          </div>
+          <div class="bento-glass-overlay">
+            <div class="bento-badge">NATYA & FOLK · TRIPTYCH</div>
+            <h3 class="bento-card-title">Classical Balance & Folk Rhythms</h3>
+            <p class="bento-card-sub">Elemental rhythm, vibrant costumes, and traditional cadence</p>
+          </div>
+          <div class="bento-zoom-indicator" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+          </div>
+        </article>
+
+        <!-- Bento 4: Triptych 2 (Thespians & Honours) -->
+        <article class="bento-tile bento-tall" data-modal-src="assets/collages/triptych_02.jpg" data-modal-title="The Thespian Guild & Convocation Triptych" data-modal-desc="Student theatrical drama and presidential valedictory moments.">
+          <div class="bento-media-frame">
+            <img src="assets/collages/triptych_02.jpg" alt="Thespian and Honours Triptych" class="bento-img" loading="lazy">
+          </div>
+          <div class="bento-glass-overlay">
+            <div class="bento-badge">THESPIANS & HONOURS</div>
+            <h3 class="bento-card-title">Drama & Academic Distinction</h3>
+            <p class="bento-card-sub">The Alchemist of Time production and gold medal laureates</p>
+          </div>
+          <div class="bento-zoom-indicator" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+          </div>
+        </article>
+
+        <!-- Bento 5: Master Mosaic 2 (Grand Finale & Fireworks) -->
+        <article class="bento-tile bento-wide" data-modal-src="assets/collages/master_mosaic_2.jpg" data-modal-title="Grand Choral Finale & Illumination" data-modal-desc="Six-shot montage of the entire school united for the final anthem and celebration.">
+          <div class="bento-media-frame">
+            <img src="assets/collages/master_mosaic_2.jpg" alt="Grand Finale Master Mosaic" class="bento-img" loading="lazy">
+          </div>
+          <div class="bento-glass-overlay">
+            <div class="bento-badge">FINALE & PYROTECHNICS</div>
+            <h3 class="bento-card-title">Crescendo & All-School Unity</h3>
+            <p class="bento-card-sub">600 performers uniting under illuminated skies</p>
+          </div>
+          <div class="bento-zoom-indicator" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+          </div>
+        </article>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Interactive Lightbox Modal for Fullscreen Collage Inspection -->
+  <div id="collage-lightbox" class="collage-lightbox" role="dialog" aria-modal="true" aria-label="High-Resolution Collage Viewer" hidden>
+    <div class="lightbox-scrim" data-close-lightbox></div>
+    <div class="lightbox-dialog">
+      <button class="lightbox-close-btn" data-close-lightbox aria-label="Close Lightbox">&times;</button>
+      <div class="lightbox-image-wrapper">
+        <img id="lightbox-img" src="" alt="Enlarged stage collage">
+      </div>
+      <div class="lightbox-caption">
+        <h4 id="lightbox-title">Stage Collage</h4>
+        <p id="lightbox-desc">High-resolution photographic montage</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       8. DIGITAL PASS GENERATOR & VENUE DETAILS (#venue-passes)
+       ======================================================================== -->
+  <section id="venue-passes" aria-label="Digital Entry Passes and Venue Access">
+    <div class="venue-inner">
+      
+      <div class="section-head-block">
+        <span class="section-index-marker">04 / ADMISSION & CREDENTIALS</span>
+        <h2 class="section-title">Digital Entry Pass Studio</h2>
+        <p class="section-lead-copy">
+          Generate your official Apple Wallet-inspired digital credential. Present this pass at Gate 1 or Gate 3 for biometric verification and seat guidance.
+        </p>
+      </div>
+
+      <div class="pass-studio-layout">
+        
+        <!-- Pass Configuration Form -->
+        <div class="pass-config-form">
+          <div class="form-group">
+            <label for="pass-input-name" class="form-label">Full Name of Attendee</label>
+            <input type="text" id="pass-input-name" class="form-input" placeholder="e.g. Alexander Vance" value="Alexander Vance">
+          </div>
+
+          <div class="form-group">
+            <span class="form-label">Affiliation / House</span>
+            <div class="pill-selector-row">
+              <button type="button" class="pill-option house-option is-selected" data-house="St. Patrick's House">St. Patrick</button>
+              <button type="button" class="pill-option house-option" data-house="St. Francis House">St. Francis</button>
+              <button type="button" class="pill-option house-option" data-house="St. Ignatius House">St. Ignatius</button>
+              <button type="button" class="pill-option house-option" data-house="St. Theresa's House">St. Theresa</button>
+              <button type="button" class="pill-option house-option" data-house="Distinguished Alumni">Alumni</button>
+              <button type="button" class="pill-option house-option" data-house="Faculty / Staff">Faculty</button>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <span class="form-label">Access Tier</span>
+            <div class="pill-selector-row">
+              <button type="button" class="pill-option tier-option is-selected" data-tier="Patron Circle">Patron Circle</button>
+              <button type="button" class="pill-option tier-option" data-tier="General Admission">General Admission</button>
+              <button type="button" class="pill-option tier-option" data-tier="VIP Delegate">VIP Delegate</button>
+            </div>
+          </div>
+
+          <div class="pass-action-buttons">
+            <button id="btn-download-pass" class="btn-download-pass">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="7 10 12 15 17 10"></polyline>
+                <line x1="12" y1="15" x2="12" y2="3"></line>
+              </svg>
+              <span>Print / Save Pass</span>
+            </button>
+            <a href="#hero-stage" class="btn-secondary-rsvp">Review Overture</a>
+          </div>
+        </div>
+
+        <!-- Apple Wallet Live Pass Card (Interactive 3D Tilt + Holographic Sheen) -->
+        <div class="pass-preview-stage">
+          <div class="apple-pass-card" role="region" aria-label="Official Digital Admission Pass">
+            <!-- Holographic Sheen -->
+            <div class="pass-hologram-sheen" aria-hidden="true"></div>
+
+            <div class="pass-card-top">
+              <div class="pass-brand-lockup">
+                <img src="assets/school-logo.png" alt="Crest" class="pass-crest-mini" onerror="this.src='assets/school logo (2).png'">
+                <div>
+                  <div class="pass-school-title">ST. JOSEPH'S SCHOOL</div>
+                  <div style="font-family: var(--font-mono); font-size: 0.5625rem; color: var(--accent-spotlight);">AETHERIA 2026</div>
+                </div>
+              </div>
+              <span id="card-tier-badge" class="pass-tier-badge">Patron Circle</span>
+            </div>
+
+            <div class="pass-attendee-section">
+              <span class="pass-field-label">Cardholder</span>
+              <span id="card-guest-name" class="pass-field-name">Alexander Vance</span>
+            </div>
+
+            <div class="pass-grid-fields">
+              <div>
+                <span class="pass-field-label">Affiliation</span>
+                <div id="card-house-tag" class="pass-field-value">St. Patrick's House</div>
+              </div>
+              <div>
+                <span class="pass-field-label">Seat Allocation</span>
+                <div class="pass-field-value">Orchestra · Row C-14</div>
+              </div>
+              <div>
+                <span class="pass-field-label">Date & Time</span>
+                <div class="pass-field-value">5 Dec 2026 · 17:30 IST</div>
+              </div>
+              <div>
+                <span class="pass-field-label">Access Gate</span>
+                <div class="pass-field-value">Gate 3 (South Portal)</div>
+              </div>
+            </div>
+
+            <div class="pass-barcode-deck">
+              <div class="pass-qr-frame">
+                <canvas id="pass-qr-canvas" class="pass-qr-canvas" aria-label="Dynamic QR verification code"></canvas>
+              </div>
+              <span id="card-serial-code" class="pass-serial-id">SJS-2026-AE-8492</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Architectural Venue Specs Grid -->
+      <div class="venue-specs-matrix">
+        <div class="venue-spec-card">
+          <svg class="venue-spec-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+            <circle cx="12" cy="10" r="3"></circle>
+          </svg>
+          <span class="venue-spec-title">Campus Coordinates</span>
+          <span class="venue-spec-val">St. Joseph's School Campus</span>
+          <span class="venue-spec-note">Kajipur, Bihar · 25.6093° N, 85.1235° E</span>
+        </div>
+
+        <div class="venue-spec-card">
+          <svg class="venue-spec-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+            <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+          </svg>
+          <span class="venue-spec-title">Arrival Protocols</span>
+          <span class="venue-spec-val">Gate 1 & Gate 3 Entry</span>
+          <span class="venue-spec-note">Auditorium doors close strictly at 17:15 IST</span>
+        </div>
+
+        <div class="venue-spec-card">
+          <svg class="venue-spec-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon>
+          </svg>
+          <span class="venue-spec-title">Valet & Transit</span>
+          <span class="venue-spec-val">Gate 4 Parking Facility</span>
+          <span class="venue-spec-note">Dedicated EV charging bays and chauffeur lounge</span>
+        </div>
+
+        <div class="venue-spec-card">
+          <svg class="venue-spec-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
+            <line x1="7" y1="7" x2="7.01" y2="7"></line>
+          </svg>
+          <span class="venue-spec-title">Dress Code</span>
+          <span class="venue-spec-val">Formal Evening Attire</span>
+          <span class="venue-spec-note">Black-tie or ceremonial school alumni blazers</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       9. UNDERSTATED FOOTER (School Crest, Latin Motto, Jury Credentials)
+       ======================================================================== -->
+  <footer class="site-footer" role="contentinfo">
+    <div class="footer-inner">
+      
+      <div class="footer-top-row">
+        <div class="footer-brand">
+          <img src="assets/school-logo.png" alt="St. Joseph's Senior Sec. School Crest" class="footer-crest" onerror="this.src='assets/school logo (2).png'">
+          <div class="footer-brand-text">
+            <div class="footer-school-title">ST. JOSEPH'S SENIOR SEC. SCHOOL</div>
+            <div class="footer-motto-quote">KAZIPUR, KAUSHAMBI · ESTD 1984</div>
+            <p class="footer-statement">
+              Dedicated to academic rigour, cultural mastery, and the cultivation of compassionate global leadership.
+            </p>
+          </div>
+        </div>
+
+        <div class="footer-nav-col">
+          <span class="footer-col-title">Navigation</span>
+          <a href="#hero-stage" class="footer-link">The Overture</a>
+          <a href="#performances-slider" class="footer-link">The Five Movements</a>
+          <a href="#itinerary" class="footer-link">Order of Proceedings</a>
+          <a href="#visual-chronicles" class="footer-link">Visual Collages</a>
+          <a href="#venue-passes" class="footer-link">Digital Admission Pass</a>
+        </div>
+
+        <div class="footer-nav-col">
+          <span class="footer-col-title">Affiliations</span>
+          <span class="footer-link">Council for the ISCE</span>
+          <span class="footer-link">Patna Metropolitan League</span>
+          <span class="footer-link">Old Boys' & Girls' Guild</span>
+          <span class="footer-link">Academic Senate</span>
+        </div>
+      </div>
+
+      <div class="footer-bottom-bar">
+        <div>
+          &copy; 2026 St. Joseph's School, Kajipur. All rights reserved.
+        </div>
+        <div class="footer-legal">
+          <span>Architected with Apple "Liquid Glass" Spatial Tokens</span>
+          <span>Awwwards Site of the Year Jury Candidate</span>
+        </div>
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- ========================================================================
+       10. SCRIPTS & LIBRARIES (Lenis 1.x + GSAP 3 + ScrollTrigger via official CDN)
+       ======================================================================== -->
+  <!-- Lenis Smooth Scroll Engine -->
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js"></script>
+  <!-- GreenSock Animation Platform & ScrollTrigger Plugin -->
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+  <!-- Bespoke Application Core -->
+  <script src="js/main.js"></script>
+
+</body>
+</html>
