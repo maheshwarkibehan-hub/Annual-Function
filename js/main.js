@@ -1,6 +1,6 @@
 /**
- * AETHERIA 2026 — BESPOKE FRONTEND ENGINE
- * St. Joseph's School, Kajipur · Annual Cultural & Academic Gala
+ * ANNUAL FUNCTION 2026 — BESPOKE FRONTEND ENGINE
+ * St. Joseph's Senior Sec. School, Kazipur, Kaushambi · Theme: Ecology
  * 
  * Strict Apple 2026 "Liquid Glass" Spatial Design System
  * Lenis 1.x + GSAP 3 + ScrollTrigger Architecture
@@ -12,7 +12,8 @@
    ========================================================================== */
 const CONFIG = {
   // Event & Institution Metadata
-  eventName: "AETHERIA 2026",
+  eventName: "ANNUAL FUNCTION 2026",
+  eventTheme: "Ecology (Voices of the Living Earth)",
   eventSubtitle: "The Annual Cultural & Academic Gala",
   schoolName: "St. Joseph's Senior Sec. School, Kazipur, Kaushambi",
   schoolMotto: "Always Aim High · Kazipur, Kaushambi",
@@ -285,7 +286,7 @@ function initCalibrationMode() {
   if (!timerDock) return;
 
   // Check saved calibration from localStorage
-  const savedCoords = localStorage.getItem('aetheria_timer_coords');
+  const savedCoords = localStorage.getItem('sjs_eco_timer_coords') || localStorage.getItem('aetheria_timer_coords');
   if (savedCoords) {
     try {
       const parsed = JSON.parse(savedCoords);
@@ -297,7 +298,9 @@ function initCalibrationMode() {
 
   // Detect URL parameter ?calibrate=true or local storage flag
   const urlParams = new URLSearchParams(window.location.search);
-  const isCalibrationActive = urlParams.get('calibrate') === 'true' || localStorage.getItem('aetheria_calibrate') === 'true';
+  const isCalibrationActive = urlParams.get('calibrate') === 'true' || 
+    localStorage.getItem('sjs_eco_calibrate') === 'true' || 
+    localStorage.getItem('aetheria_calibrate') === 'true';
 
   if (isCalibrationActive && hud) {
     hud.classList.add('is-open');
@@ -411,7 +414,7 @@ function initCalibrationMode() {
       }
 
       applyCoordinates(coords);
-      localStorage.setItem('aetheria_timer_coords', JSON.stringify(coords));
+      localStorage.setItem('sjs_eco_timer_coords', JSON.stringify(coords));
       showToast("Position applied & saved");
     });
   });
@@ -649,7 +652,7 @@ function initPassGenerator() {
   });
 
   // Draw initial QR Matrix
-  drawRealisticQRCode(qrCanvas, "Alexander Vance · SJS-2026-AE");
+  drawRealisticQRCode(qrCanvas, "Alexander Vance · SJS-2026-ECO");
 
   // 3D Card Tilt & Holographic Sheen on Mouse Movement
   if (passCard && sheen) {

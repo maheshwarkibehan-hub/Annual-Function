@@ -1,6 +1,6 @@
 /* ==========================================================================
-   AETHERIA 2026 — APPLE 2026 "LIQUID GLASS" SPATIAL DESIGN SYSTEM
-   St. Joseph's School, Kajipur · Annual Cultural & Academic Gala
+   ANNUAL FUNCTION 2026 — APPLE 2026 "LIQUID GLASS" SPATIAL DESIGN SYSTEM
+   St. Joseph's Senior Sec. School, Kazipur, Kaushambi · Theme: Ecology
    Adheres to Anthropic Anti-Slop (Oct 2026) & OpenAI Frontend Architecture (2026)
    ========================================================================== */
 
@@ -768,6 +768,33 @@ body.cinema-mode .site-header:hover {
   border-radius: 50%;
   background: var(--accent-spotlight);
   box-shadow: 0 0 8px var(--accent-spotlight);
+}
+
+/* Ecological Theme Badge in Hero */
+.hero-theme-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.28rem 0.75rem;
+  border-radius: 9999px;
+  background: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  font-family: var(--font-mono);
+  font-size: 0.65625rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: #34D399;
+  text-transform: uppercase;
+  width: fit-content;
+  box-shadow: 0 0 16px rgba(16, 185, 129, 0.18);
+  margin: 0.1rem 0;
+}
+
+.theme-leaf-icon {
+  font-size: 0.75rem;
+  line-height: 1;
 }
 
 .hero-headline {
@@ -2441,6 +2468,12 @@ body.cinema-mode .site-header:hover {
 
   .hero-index-marker {
     font-size: 0.625rem !important;
+  }
+
+  .hero-theme-tag {
+    font-size: 0.58rem !important;
+    padding: 0.2rem 0.55rem !important;
+    margin: 0 auto !important;
   }
 
   .hero-headline {
